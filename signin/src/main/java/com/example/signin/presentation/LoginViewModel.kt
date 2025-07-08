@@ -1,19 +1,28 @@
 package com.example.signin.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.core.AppStrings
+import com.example.core.Result
 import com.example.core.ScreenModel
+import com.example.signin.domain.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-
-class LoginViewModel(private val navController: NavController): ViewModel(){
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase): ViewModel(){
 
     private val _state = MutableStateFlow(LoginState())
+
+    private val _effect = MutableSharedFlow<LoginUiEffect>()
 
     private var navController: NavController? = null
 
@@ -22,12 +31,13 @@ class LoginViewModel(private val navController: NavController): ViewModel(){
     }
 
     val state = _state.asStateFlow()
+    val effect = _effect.asSharedFlow()
 
     fun onIntent(intent: LoginIntent){
         when(intent){
             is LoginIntent.OnChangeEmail -> _state.update { it.copy(email = intent.email) }
             is LoginIntent.OnChangePassword -> _state.update { it.copy(password = intent.password) }
-            LoginIntent.OnNavigateToRegister -> navController.popBackStack()
+            LoginIntent.OnNavigateToRegister -> navController?.popBackStack()
             LoginIntent.OnSubmit -> onSubmit()
         }
     }
@@ -42,16 +52,22 @@ class LoginViewModel(private val navController: NavController): ViewModel(){
         val passwordError = _state.value.passwordError
 
         if (email.isEmpty()) {
-            _state.update { it.copy(emailError = AppStrings.emptyField) }
+            _state.update { it.copy(emailError = AppStrings.emptyField, loading = false) }
         }
 
         if(password.isEmpty()){
-            _state.update { it.copy(passwordError = AppStrings.emptyField) }
+            _state.update { it.copy(passwordError = AppStrings.emptyField, loading = false) }
         }
 
         if(emailError.isEmpty() && passwordError.isEmpty()){
             _state.update { it.copy(loading = false, emailError = "", passwordError = "") }
-            navController.navigate(ScreenModel.Home.route){popUpTo(ScreenModel.Login.route){inclusive=true} }
+            viewModelScope.launch {
+                when(val res = loginUseCase.invoke(email,password)) {
+                    is Result.Error -> _effect.emit(LoginUiEffect.OnShowError(res.message))
+                    is Result.Success<*> -> navController?.navigate(ScreenModel.Home.route){popUpTo(ScreenModel.Login.route){inclusive=true} }
+                }
+            }
+
         }
 
 
