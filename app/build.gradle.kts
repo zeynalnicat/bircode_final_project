@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":profile"))
     implementation(project(":settings"))
     implementation(project(":common"))
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

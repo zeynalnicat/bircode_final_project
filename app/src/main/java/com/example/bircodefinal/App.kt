@@ -15,8 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bircodefinal.navigation.AppNavigator
-import com.example.bircodefinal.navigation.ScreenModel
 import com.example.bircodefinal.navigation.TopLevelRoute
+import com.example.core.ScreenModel
 
 
 @Composable

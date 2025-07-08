@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.core.ScreenModel
 import com.example.home.presentation.HomeScreen
 import com.example.pin.presentation.PinScreen
 import com.example.profile.presentation.ProfileScreen
@@ -25,8 +26,8 @@ fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController){
     ){
 
         composable(ScreenModel.Home.route){ HomeScreen() }
-        composable( ScreenModel.SignUp.route) { SignUpScreen() }
-        composable(ScreenModel.Login.route) { LoginScreen() }
+        composable( ScreenModel.SignUp.route) { SignUpScreen(navController) }
+        composable(ScreenModel.Login.route) { LoginScreen(navController) }
         composable(ScreenModel.Settings.route) { SettingsScreen() }
         composable(ScreenModel.Pin.route) { PinScreen() }
         composable(ScreenModel.Profile.route) { ProfileScreen() }

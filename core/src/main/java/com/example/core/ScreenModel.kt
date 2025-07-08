@@ -1,4 +1,4 @@
-package com.example.bircodefinal.navigation
+package com.example.core
 
 sealed class ScreenModel(val route:String) {
 
