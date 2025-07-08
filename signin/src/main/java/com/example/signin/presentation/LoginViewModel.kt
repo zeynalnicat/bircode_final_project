@@ -60,7 +60,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         }
 
         if(emailError.isEmpty() && passwordError.isEmpty()){
-            _state.update { it.copy(loading = false, emailError = "", passwordError = "") }
+            _state.update { it.copy(emailError = "", passwordError = "") }
             viewModelScope.launch {
                 when(val res = loginUseCase.invoke(email,password)) {
                     is Result.Error -> _effect.emit(LoginUiEffect.OnShowError(res.message))
