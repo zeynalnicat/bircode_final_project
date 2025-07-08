@@ -22,4 +22,5 @@ object AppStrings {
     val signIn = "Sign in"
     val passwordLenghtError = "Password should contain at least 6 characters"
 
+    val enterPin = "Enter your pin"
 }

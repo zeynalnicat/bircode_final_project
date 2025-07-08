@@ -24,8 +24,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
-    @Inject
-    lateinit var firebaseFirestore: FirebaseFirestore
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +32,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BircodeFinalTheme{
                 Scaffold(modifier = Modifier.fillMaxSize().background(Primary)) { innerPadding->
-                    App(innerPadding,firebaseAuth,firebaseFirestore)
+                    App(innerPadding,firebaseAuth)
                 }
             }
        }

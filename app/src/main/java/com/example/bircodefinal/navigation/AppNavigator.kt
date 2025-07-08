@@ -15,14 +15,15 @@ import com.example.profile.presentation.ProfileScreen
 import com.example.register.presentation.SignUpScreen
 import com.example.settings.presentation.SettingsScreen
 import com.example.signin.presentation.LoginScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController){
+fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController,firebaseAuth: FirebaseAuth){
 
 
     NavHost(
         navController = navController,
-        startDestination = ScreenModel.SignUp.route,
+        startDestination = if(firebaseAuth.currentUser!=null) ScreenModel.Pin.route else ScreenModel.SignUp.route,
         modifier = Modifier.padding(innerPadding)
     ){
 

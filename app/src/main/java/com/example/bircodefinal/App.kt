@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
-fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth,firebaseStore: FirebaseFirestore){
+fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
     val navController = rememberNavController()
 
     val topLevelRoutes = listOf(
@@ -36,7 +36,8 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth,firebaseSto
 
     Scaffold(
         bottomBar = {
-            if(currentRoute !in listOf(ScreenModel.SignUp.route, ScreenModel.Login.route)){
+            if(currentRoute !in listOf(ScreenModel.SignUp.route, ScreenModel.Login.route,
+                    ScreenModel.Pin.route)){
                 NavigationBar {
                           topLevelRoutes.forEach { route->
                               val selected = currentRoute == route.route
@@ -62,7 +63,7 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth,firebaseSto
 
         }
     ) { innerPadding->
-        AppNavigator(innerPadding,navController)
+        AppNavigator(innerPadding,navController,firebaseAuth)
     }
 
 
