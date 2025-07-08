@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,7 +27,7 @@ fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController){
     ){
 
         composable(ScreenModel.Home.route){ HomeScreen() }
-        composable( ScreenModel.SignUp.route) { SignUpScreen(navController) }
+        composable( ScreenModel.SignUp.route) { SignUpScreen(navController,hiltViewModel()) }
         composable(ScreenModel.Login.route) { LoginScreen(navController) }
         composable(ScreenModel.Settings.route) { SettingsScreen() }
         composable(ScreenModel.Pin.route) { PinScreen() }

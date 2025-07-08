@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818641966591",
+    "project_id": "bircode-final",
+    "storage_bucket": "bircode-final.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818641966591:android:ecda92f224b166937203ca",
+        "android_client_info": {
+          "package_name": "com.example.bircodefinal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzwh8dB3gFxkF1_IvkzimxZMtyFMkwwMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

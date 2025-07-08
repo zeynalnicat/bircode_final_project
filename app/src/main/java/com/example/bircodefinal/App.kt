@@ -17,10 +17,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bircodefinal.navigation.AppNavigator
 import com.example.bircodefinal.navigation.TopLevelRoute
 import com.example.core.ScreenModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
-fun App(innerPaddingValues: PaddingValues){
+fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth,firebaseStore: FirebaseFirestore){
     val navController = rememberNavController()
 
     val topLevelRoutes = listOf(

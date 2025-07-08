@@ -8,15 +8,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.common.components.DButton
 import com.example.common.components.DTextField
@@ -25,69 +30,94 @@ import com.example.common.theme.Primary
 import com.example.core.AppStrings
 
 
-
 @Composable
-fun SignUpScreen(navController: NavController){
+fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel){
 
-    val viewModel = viewModel { SignUpViewModel(navController) }
     val state = viewModel.state.collectAsState().value
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.background(Primary).fillMaxSize().padding(horizontal = 32.dp)
-    ) {
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        Text(AppStrings.createAccount, style = DTextStyle.title)
 
-        Spacer(Modifier.height(24.dp))
-        Column {
-            DTextField(
-                value = state.email,
-                onChange = {viewModel.onIntent(SignUpIntent.OnChangeEmail(it))},
-                placeHolder = AppStrings.emailPlaceHolder,
-                isError = state.emailError.isNotEmpty(),
-                supportingText = state.emailError.ifEmpty { null }
-            )
+    LaunchedEffect(Unit) {
+        viewModel.initiateController(navController)
+    }
 
-            Spacer(Modifier.height(16.dp))
-            DTextField(
-                value = state.name,
-                onChange = {viewModel.onIntent(SignUpIntent.OnChangeName(it))},
-                placeHolder = AppStrings.namePlaceHolder,
-                isError = state.nameError.isNotEmpty(),
-                supportingText = state.nameError.ifEmpty { null }
-            )
+    LaunchedEffect(viewModel.effect) {
 
-            Spacer(Modifier.height(16.dp))
-            DTextField(
-                value = state.password,
-                onChange = {viewModel.onIntent(SignUpIntent.OnChangePassword(it))},
-                placeHolder = AppStrings.passwordPlaceHolder,
-                visualTransformation = PasswordVisualTransformation(),
-                isError = state.passwordError.isNotEmpty(),
-                supportingText = state.passwordError.ifEmpty { null }
-            )
+        viewModel.effect.collect {
+            when(it){
+                is SignUpUiEffect.OnShowError -> snackbarHostState.showSnackbar(it.error)
+            }
 
-            Spacer(Modifier.height(16.dp))
+        }
 
-            Text(AppStrings.alreadyHaveAccount, style = DTextStyle.link, modifier = Modifier.clickable{viewModel.onIntent(
-                SignUpIntent.OnNavigateToLogin)})
+    }
 
-            Spacer(Modifier.height(16.dp))
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+    ) {paddingValues ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.background(Primary).fillMaxSize().padding(horizontal = 32.dp).padding(paddingValues)
+        ) {
 
-            DButton(
-                title = AppStrings.register,
-                onClick = {viewModel.onIntent(SignUpIntent.OnSubmit)},
-                loading = state.loading
-            )
+            Text(AppStrings.createAccount, style = DTextStyle.title)
 
+            Spacer(Modifier.height(24.dp))
+            Column {
+                DTextField(
+                    value = state.email,
+                    onChange = {viewModel.onIntent(SignUpIntent.OnChangeEmail(it))},
+                    placeHolder = AppStrings.emailPlaceHolder,
+                    isError = state.emailError.isNotEmpty(),
+                    supportingText = state.emailError.ifEmpty { null }
+                )
+
+                Spacer(Modifier.height(16.dp))
+                DTextField(
+                    value = state.name,
+                    onChange = {viewModel.onIntent(SignUpIntent.OnChangeName(it))},
+                    placeHolder = AppStrings.namePlaceHolder,
+                    isError = state.nameError.isNotEmpty(),
+                    supportingText = state.nameError.ifEmpty { null }
+                )
+
+                Spacer(Modifier.height(16.dp))
+                DTextField(
+                    value = state.password,
+                    onChange = {viewModel.onIntent(SignUpIntent.OnChangePassword(it))},
+                    placeHolder = AppStrings.passwordPlaceHolder,
+                    visualTransformation = PasswordVisualTransformation(),
+                    isError = state.passwordError.isNotEmpty(),
+                    supportingText = state.passwordError.ifEmpty { null }
+                )
+
+                Spacer(Modifier.height(16.dp))
+
+                Text(AppStrings.alreadyHaveAccount, style = DTextStyle.link, modifier = Modifier.clickable{viewModel.onIntent(
+                    SignUpIntent.OnNavigateToLogin)})
+
+                Spacer(Modifier.height(16.dp))
+
+                DButton(
+                    title = AppStrings.register,
+                    onClick = {viewModel.onIntent(SignUpIntent.OnSubmit)},
+                    loading = state.loading
+                )
+
+
+
+
+            }
 
 
 
         }
 
-
-
     }
+
 }

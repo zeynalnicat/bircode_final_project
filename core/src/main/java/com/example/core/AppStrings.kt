@@ -20,5 +20,6 @@ object AppStrings {
     val emptyField = "Empty field. Please fill it!"
 
     val signIn = "Sign in"
+    val passwordLenghtError = "Password should contain at least 6 characters"
 
 }

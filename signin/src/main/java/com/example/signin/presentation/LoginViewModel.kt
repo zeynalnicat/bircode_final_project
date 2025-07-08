@@ -4,13 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.core.AppStrings
 import com.example.core.ScreenModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+
+
 class LoginViewModel(private val navController: NavController): ViewModel(){
 
     private val _state = MutableStateFlow(LoginState())
+
+    private var navController: NavController? = null
+
+    fun initiateController(navController: NavController){
+        this.navController = navController
+    }
 
     val state = _state.asStateFlow()
 
