@@ -34,4 +34,12 @@ object AppStrings {
     val moneyTransfer = "Money Transfer"
     val payBill = "Pay Bill"
     val bankToBank = "Bank to Bank"
+    val recentTransactions = "Recent Transactions"
+    val newCardTitle = "Buy a new card"
+
+    val nameOnCard = "Name on the card"
+
+    val initialDeposit = "Initial deposit"
+
+    val buy = "Buy"
 }

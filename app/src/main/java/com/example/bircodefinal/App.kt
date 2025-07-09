@@ -39,7 +39,7 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
     Scaffold(
         bottomBar = {
             if(currentRoute !in listOf(ScreenModel.SignUp.route, ScreenModel.Login.route,
-                    ScreenModel.Pin.route)){
+                    ScreenModel.Pin.route, ScreenModel.NewCard.route)){
                 NavigationBar {
                           topLevelRoutes.forEach { route->
                               val selected = currentRoute == route.route

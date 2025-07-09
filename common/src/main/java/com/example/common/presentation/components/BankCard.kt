@@ -31,7 +31,7 @@ import com.example.core.AppStrings
 @Composable
 fun BankCard(
     cardHolder: String,
-    availableBalance: Int = 0,
+    availableBalance: String = "",
     cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
     width: Dp = 300.dp,

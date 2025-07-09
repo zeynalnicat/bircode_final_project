@@ -2,6 +2,7 @@ package com.example.home.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.example.common.presentation.components.BankCard
 import com.example.common.presentation.theme.Blue
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Gray
@@ -56,10 +55,10 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
             com.example.common.R.drawable.icon_recycled_dolar
         ),
         QuickActionModel(
-            AppStrings.payBill, Blue.copy(alpha = 0.4f), Blue,
+            AppStrings.payBill, Blue.copy(alpha = 0.2f), Blue,
             com.example.common.R.drawable.icon_thunder
         ), QuickActionModel(
-            AppStrings.bankToBank, Gray.copy(alpha = 0.4f), Gray,
+            AppStrings.bankToBank, Gray.copy(alpha = 0.2f), Gray,
             com.example.common.R.drawable.icon_facility
         )
 
@@ -77,14 +76,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(16.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     val avatarModifier = Modifier
-                        .size(42.dp)
+                        .size(32.dp)
                         .clip(CircleShape)
                         .border(0.5.dp, Color.Transparent, CircleShape)
 
@@ -111,8 +110,10 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 Icon(
                     Icons.Default.Add,
                     contentDescription = "",
-                    modifier = Modifier.size(32.dp),
-                    tint = Secondary
+                    modifier = Modifier.size(32.dp).clickable{
+                        viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
+                    },
+                    tint = Secondary,
                 )
 
             }
@@ -121,7 +122,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(vertical = 32.dp)
+                .padding(vertical = 24.dp)
         ) {
             BankCardPager(
                 listOf(
@@ -164,6 +165,12 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                     }
 
                 }
+
+                Spacer(Modifier.height(32.dp))
+
+                Text(AppStrings.recentTransactions, style = DTextStyle.t16)
+
+
             }
         }
 

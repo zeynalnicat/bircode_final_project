@@ -33,7 +33,7 @@ fun QuickAction(
 
 
     Card(
-        modifier = Modifier.border(1.dp,Color.Transparent, RoundedCornerShape(10.dp)).size(width = 150.dp, height = 100.dp),
+        modifier = Modifier.border(1.dp,Color.Transparent, RoundedCornerShape(10.dp)).size(width = 120.dp, height = 80.dp),
         colors = CardColors(
             containerColor = Color.White,
             contentColor = Color.Black,
@@ -47,14 +47,14 @@ fun QuickAction(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
-                modifier = Modifier.size(50.dp).border(1.dp,Color.Transparent,RoundedCornerShape(5.dp)).background(containerColor),
+                modifier = Modifier.size(30.dp).border(1.dp,Color.Transparent,RoundedCornerShape(12.dp)).background(containerColor),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
 
             ) {
-                Icon(painter = painterResource(icon), contentDescription = "", tint = iconColor)
+                Icon(painter = painterResource(icon), contentDescription = "", tint = iconColor, modifier = Modifier.size(24.dp))
             }
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(8.dp))
             Text(title, style = DTextStyle.t14)
         }
     }

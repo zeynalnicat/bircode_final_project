@@ -1,0 +1,44 @@
+package com.example.newcard.data
+
+import com.example.core.Result
+import com.example.newcard.domain.NewCardRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+
+class NewCardRepositoryImpl @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseFirestore: FirebaseFirestore
+) : NewCardRepository {
+
+    private val collection = firebaseFirestore.collection("cards")
+
+    override suspend fun createNewCard(
+        cardHolder: String,
+        cardColor: String,
+        deposit: String,
+        cardNumber:String
+    ): Result<Unit> = suspendCoroutine { continuation ->
+        try {
+            firebaseAuth.currentUser?.let {
+                collection.add(
+                    hashMapOf(
+                        "userId" to it.uid,
+                        "cardHolder" to cardHolder,
+                        "color" to cardColor,
+                        "deposit" to deposit,
+                        "cardNumber" to cardNumber
+                    )
+                ).addOnSuccessListener {
+                    continuation.resume(Result.Success(Unit))
+                }.addOnFailureListener { ex0 ->
+                    continuation.resume(Result.Error(message = ex0.message ?: "Unexpected Error"))
+                }
+            }
+        } catch (e: Exception) {
+              continuation.resume(Result.Error(e.message ?: "Unexpected Error"))
+        }
+    }
+}

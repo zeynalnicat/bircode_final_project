@@ -1,5 +1,7 @@
 package com.example.bircodefinal.di
 
+import com.example.newcard.data.NewCardRepositoryImpl
+import com.example.newcard.domain.NewCardRepository
 import com.example.pin.data.PinRepositoryImpl
 import com.example.pin.domain.PinRepository
 import com.example.register.data.SignUpRepositoryImpl
@@ -28,4 +30,10 @@ object RepositoryModule {
     @Provides
     fun providePinRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): PinRepository =
         PinRepositoryImpl(firebaseAuth,firebaseFirestore)
+
+    @Provides
+    fun provideNewCardRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): NewCardRepository =
+        NewCardRepositoryImpl(firebaseAuth,firebaseFirestore)
  }
+
+

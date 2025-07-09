@@ -30,7 +30,7 @@ fun BankCardPager(
 
     ) { page->
         BankCard(
-            cards[page].cardHolder,cards[page].availableBalance, cardColor = cards[page].cardColor.toULong()
+            cards[page].cardHolder,cards[page].availableBalance.toString(), cardColor = cards[page].cardColor.toULong()
         )
     }
 

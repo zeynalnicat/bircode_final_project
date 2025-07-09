@@ -26,6 +26,7 @@ fun DTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    modifier: Modifier = Modifier.fillMaxWidth(),
     supportingText: String? = null,
     isError: Boolean = false,
 ) {
@@ -36,7 +37,7 @@ fun DTextField(
             isError = isError,
             placeholder = { Text(placeHolder) },
             onValueChange = onChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier,
             shape = RoundedCornerShape(12.dp),
             keyboardActions = keyboardActions,
             keyboardOptions = keyboardOptions,
