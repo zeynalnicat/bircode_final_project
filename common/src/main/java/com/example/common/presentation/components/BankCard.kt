@@ -32,7 +32,7 @@ import com.example.core.AppStrings
 fun BankCard(
     cardHolder: String,
     availableBalance: Int = 0,
-    cardColor: Color = Secondary,
+    cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
     width: Dp = 300.dp,
     height: Dp = 200.dp,
@@ -40,9 +40,9 @@ fun BankCard(
 
     Card(
         colors = CardColors(
-            containerColor = cardColor,
+            containerColor = Color(cardColor),
             contentColor = contentColor,
-            disabledContainerColor = cardColor,
+            disabledContainerColor = Color(cardColor),
             disabledContentColor = contentColor,
         ),
         modifier = Modifier
