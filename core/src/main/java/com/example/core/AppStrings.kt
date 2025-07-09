@@ -29,4 +29,9 @@ object AppStrings {
     val availableBalance = "Available Balance"
 
     val cardHolder = "Card Holder"
+
+    val quickActions = "Quick Actions"
+    val moneyTransfer = "Money Transfer"
+    val payBill = "Pay Bill"
+    val bankToBank = "Bank to Bank"
 }

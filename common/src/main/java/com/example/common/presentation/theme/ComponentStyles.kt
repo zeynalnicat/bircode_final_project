@@ -14,6 +14,18 @@ object DTextStyle {
         fontSize = 12.sp
     )
 
+    val t14 = TextStyle(
+        color = Color.Black,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.W500
+    )
+
+    val t16 = TextStyle(
+        color = Color.Black,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W600
+    )
+
     val title = TextStyle(
         fontWeight = FontWeight.W800,
         fontSize = 20.sp,
@@ -34,4 +46,5 @@ object DTextStyle {
     val error = TextStyle(
         color = Color.Red
     )
+
 }

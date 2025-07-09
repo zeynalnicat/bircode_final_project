@@ -5,9 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -28,19 +32,39 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.common.presentation.components.BankCard
+import com.example.common.presentation.theme.Blue
 import com.example.common.presentation.theme.DTextStyle
+import com.example.common.presentation.theme.Gray
+import com.example.common.presentation.theme.Green
 import com.example.common.presentation.theme.Primary
 import com.example.common.presentation.theme.Secondary
 import com.example.core.AppStrings
 import com.example.home.R
 import com.example.home.domain.CardModel
 import com.example.home.presentation.components.BankCardPager
+import com.example.home.presentation.components.QuickAction
 
 
 @Composable
-fun HomeScreen(navController: NavController,viewModel: HomeViewModel){
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val state = viewModel.state.collectAsState().value
+
+    val quickActions = listOf(
+        QuickActionModel(
+            AppStrings.moneyTransfer, Green.copy(alpha = 0.4f), Green,
+            com.example.common.R.drawable.icon_recycled_dolar
+        ),
+        QuickActionModel(
+            AppStrings.payBill, Blue.copy(alpha = 0.4f), Blue,
+            com.example.common.R.drawable.icon_thunder
+        ), QuickActionModel(
+            AppStrings.bankToBank, Gray.copy(alpha = 0.4f), Gray,
+            com.example.common.R.drawable.icon_facility
+        )
+
+
+    )
 
     LaunchedEffect(Unit) {
         viewModel.initiateController(navController)
@@ -51,7 +75,9 @@ fun HomeScreen(navController: NavController,viewModel: HomeViewModel){
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,19 +109,73 @@ fun HomeScreen(navController: NavController,viewModel: HomeViewModel){
                 Text(AppStrings.homeTitle, style = DTextStyle.title.copy(color = Primary))
 
                 Icon(
-                    Icons.Default.Add, contentDescription = "", modifier = Modifier.size(32.dp), tint = Secondary
+                    Icons.Default.Add,
+                    contentDescription = "",
+                    modifier = Modifier.size(32.dp),
+                    tint = Secondary
                 )
 
             }
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding).padding(vertical = 32.dp)
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(vertical = 32.dp)
         ) {
             BankCardPager(
-                listOf(CardModel("Nijat Zeynalli",Secondary.value.toString(), availableBalance = 300, cardNumber = "1231313",),CardModel("Nijat Zeynalli",Primary.value.toString(), availableBalance = 1000, cardNumber = "555343",))
+                listOf(
+                    CardModel(
+                        "Nijat Zeynalli",
+                        Secondary.value.toString(),
+                        availableBalance = 300,
+                        cardNumber = "1231313",
+                    ),
+                    CardModel(
+                        "Nijat Zeynalli",
+                        Primary.value.toString(),
+                        availableBalance = 1000,
+                        cardNumber = "555343",
+                    )
+                )
             )
+
+            Spacer(Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Text(AppStrings.quickActions, style = DTextStyle.t16)
+                Spacer(Modifier.height(16.dp))
+
+                LazyRow {
+                    items(quickActions.size) { index ->
+
+                        QuickAction(
+                            quickActions[index].title,
+                            quickActions[index].icon,
+                            quickActions[index].containerColor,
+                            quickActions[index].iconColor
+                        )
+
+                        Spacer(Modifier.width(16.dp))
+
+
+                    }
+
+                }
+            }
         }
+
     }
 
 }
+
+
+data class QuickActionModel(
+    val title: String,
+    val containerColor: Color,
+    val iconColor: Color,
+    val icon: Int,
+
+    )
