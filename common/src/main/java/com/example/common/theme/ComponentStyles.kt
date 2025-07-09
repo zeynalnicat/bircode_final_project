@@ -19,4 +19,13 @@ object DTextStyle {
         fontSize = 12.sp,
         color = Secondary
     )
+
+    val digit = TextStyle(
+        color = Color.White,
+        fontWeight = FontWeight.W600
+    )
+
+    val error = TextStyle(
+        color = Color.Red
+    )
 }
