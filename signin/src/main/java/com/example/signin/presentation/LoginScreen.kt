@@ -21,13 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.example.common.components.DButton
-import com.example.common.components.DTextField
-import com.example.common.theme.DTextStyle
-import com.example.common.theme.Primary
+import com.example.common.presentation.components.DButton
+import com.example.common.presentation.components.DTextField
+import com.example.common.presentation.theme.DTextStyle
+import com.example.common.presentation.theme.Primary
 import com.example.core.AppStrings
 import kotlin.text.ifEmpty
 

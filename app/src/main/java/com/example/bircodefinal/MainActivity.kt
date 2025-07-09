@@ -10,10 +10,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.common.theme.BircodeFinalTheme
-import com.example.common.theme.Primary
+import com.example.common.presentation.theme.BircodeFinalTheme
+import com.example.common.presentation.theme.Primary
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

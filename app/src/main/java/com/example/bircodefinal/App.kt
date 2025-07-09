@@ -12,6 +12,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bircodefinal.navigation.AppNavigator
@@ -26,7 +28,7 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
     val navController = rememberNavController()
 
     val topLevelRoutes = listOf(
-        TopLevelRoute(ScreenModel.Home.route,"Home", Icons.Default.Home),
+        TopLevelRoute(ScreenModel.Home.route,"Home", ImageVector.vectorResource(R.drawable.icon_home)),
         TopLevelRoute(ScreenModel.Profile.route,"Profile", Icons.Default.Person),
         TopLevelRoute(ScreenModel.Settings.route,"Settings", Icons.Default.Settings)
     )

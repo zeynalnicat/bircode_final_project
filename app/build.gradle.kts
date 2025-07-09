@@ -91,5 +91,10 @@ dependencies {
     implementation(libs.firebase.firestore)
 
 
+    // Image upload from network
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+
 }
 

@@ -23,4 +23,10 @@ object AppStrings {
     val passwordLenghtError = "Password should contain at least 6 characters"
 
     val enterPin = "Enter your pin"
+
+    val homeTitle = "Fintech"
+
+    val availableBalance = "Available Balance"
+
+    val cardHolder = "Card Holder"
 }

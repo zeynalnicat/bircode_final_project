@@ -1,4 +1,4 @@
-package com.example.common.theme
+package com.example.common.presentation.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -7,6 +7,12 @@ import androidx.compose.ui.graphics.Color
 
 
 object DTextStyle {
+
+
+    val t12 = TextStyle(
+        color = Color.White,
+        fontSize = 12.sp
+    )
 
     val title = TextStyle(
         fontWeight = FontWeight.W800,

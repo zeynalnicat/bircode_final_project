@@ -26,9 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.common.theme.DTextStyle
-import com.example.common.theme.Primary
-import com.example.common.theme.Secondary
+import com.example.common.presentation.theme.DTextStyle
+import com.example.common.presentation.theme.Primary
+import com.example.common.presentation.theme.Secondary
 import com.example.core.AppStrings
 import com.example.pin.presentation.components.NumberButton
 
@@ -108,47 +108,51 @@ fun PinScreen(navController: NavController, viewModel: PinViewModel) {
 
         Spacer(Modifier.height(32.dp))
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White.copy(alpha = 0.1f)
-            )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            for (i in 0..2) {
-                kt += 2
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White.copy(alpha = 0.1f)
+                )
+            ) {
+                for (i in 0..2) {
+                    kt += 2
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        for (k in 0..2) {
+                            var digit = i + k + kt
+                            NumberButton(digit.toString()) {
+                                viewModel.onIntent(
+                                    PinIntent.OnPressDigit(
+                                        digit.toString()
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 24.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    for (k in 0..2) {
-                        var digit = i + k + kt
-                        NumberButton(digit.toString()) {
-                            viewModel.onIntent(
-                                PinIntent.OnPressDigit(
-                                    digit.toString()
-                                )
-                            )
-                        }
-                    }
+                    NumberButton("Clear") { viewModel.onIntent(PinIntent.OnClear) }
+                    NumberButton("0") { viewModel.onIntent(PinIntent.OnPressDigit("0")) }
+                    NumberButton("⌫") { viewModel.onIntent(PinIntent.OnRemoveDigit) }
                 }
+        }
 
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                NumberButton("Clear") { viewModel.onIntent(PinIntent.OnClear) }
-                NumberButton("0") { viewModel.onIntent(PinIntent.OnPressDigit("0")) }
-                NumberButton("⌫") { viewModel.onIntent(PinIntent.OnRemoveDigit) }
-            }
 
         }
 
