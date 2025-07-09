@@ -4,4 +4,5 @@ sealed class HomeIntent {
 
     data object OnNavigateToAddCard: HomeIntent()
 
+    data object OnGetUserCards: HomeIntent()
 }

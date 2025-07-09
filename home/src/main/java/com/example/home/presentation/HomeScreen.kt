@@ -67,6 +67,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     LaunchedEffect(Unit) {
         viewModel.initiateController(navController)
+        viewModel.onIntent(HomeIntent.OnGetUserCards)
     }
 
     Scaffold(
@@ -125,20 +126,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 .padding(vertical = 24.dp)
         ) {
             BankCardPager(
-                listOf(
-                    CardModel(
-                        "Nijat Zeynalli",
-                        Secondary.value.toString(),
-                        availableBalance = 300,
-                        cardNumber = "1231313",
-                    ),
-                    CardModel(
-                        "Nijat Zeynalli",
-                        Primary.value.toString(),
-                        availableBalance = 1000,
-                        cardNumber = "555343",
-                    )
-                )
+                cards = state.cards
             )
 
             Spacer(Modifier.height(16.dp))

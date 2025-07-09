@@ -1,5 +1,7 @@
 package com.example.bircodefinal.di
 
+import com.example.home.domain.GetUserCardsUseCase
+import com.example.home.domain.HomeRepository
 import com.example.newcard.domain.CreateNewCardUseCase
 import com.example.newcard.domain.NewCardRepository
 import com.example.pin.domain.EnterPinUseCase
@@ -35,5 +37,9 @@ object UseCaseModule {
     @Provides
     fun provideCreateNewCardUseCase(newCardRepository: NewCardRepository): CreateNewCardUseCase =
         CreateNewCardUseCase(newCardRepository)
+
+    @Provides
+    fun provideGetUserCards(homeRepository: HomeRepository): GetUserCardsUseCase =
+        GetUserCardsUseCase(homeRepository)
 
 }
