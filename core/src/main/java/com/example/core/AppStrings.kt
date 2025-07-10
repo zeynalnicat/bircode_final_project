@@ -42,4 +42,6 @@ object AppStrings {
     val initialDeposit = "Initial deposit"
 
     val buy = "Buy"
+
+    val noRecentTransactions = "No recent transactions found"
 }

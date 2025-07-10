@@ -1,5 +1,6 @@
 package com.example.common.presentation.theme
 
+import androidx.compose.material3.Text
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -14,10 +15,21 @@ object DTextStyle {
         fontSize = 12.sp
     )
 
+    val t12Bold = TextStyle(
+        color = Color.Black,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.W600
+    )
+
     val t14 = TextStyle(
         color = Color.Black,
         fontSize = 14.sp,
         fontWeight = FontWeight.W500
+    )
+
+    val t12Gray = TextStyle(
+        color = Gray,
+        fontSize = 12.sp
     )
 
     val t16 = TextStyle(

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -48,14 +51,18 @@ import com.example.common.presentation.theme.Secondary
 import com.example.core.AppStrings
 import com.example.home.R
 import com.example.home.domain.CardModel
+import com.example.home.domain.TransactionModel
 import com.example.home.presentation.components.BankCardPager
 import com.example.home.presentation.components.QuickAction
+import com.example.home.presentation.components.RecentTransactions
 
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val state = viewModel.state.collectAsState().value
+
+    val scrollState = rememberScrollState()
 
     val quickActions = listOf(
         QuickActionModel(
@@ -85,7 +92,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -133,14 +140,16 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(vertical = 24.dp)
+                .padding(top = 16.dp)
+                .verticalScroll(scrollState)
         ) {
 
             if (state.cards.isEmpty()) {
 
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp).clickable{
+                        .padding(horizontal = 16.dp)
+                        .clickable {
                             viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
                         },
                     contentAlignment = Alignment.Center
@@ -167,11 +176,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null,
-                        modifier = Modifier.size(48.dp).clickable{
-                            viewModel.onIntent(HomeIntent.OnNavigateToAddCard)}
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable {
+                                viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
+                            }
                     )
                 }
-
 
 
             } else {
@@ -209,6 +220,12 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 Spacer(Modifier.height(32.dp))
 
                 Text(AppStrings.recentTransactions, style = DTextStyle.t16)
+
+                Spacer(Modifier.height(16.dp))
+
+                RecentTransactions(
+                    state.transactions
+                )
 
 
             }
