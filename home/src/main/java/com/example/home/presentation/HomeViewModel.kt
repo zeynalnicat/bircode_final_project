@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.home.domain.CardModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUserCardsUseCase): ViewModel() {
+class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUserCardsUseCase): ViewModel(),
+    CoreViewModel<HomeIntent> {
 
     private val _state = MutableStateFlow(HomeState())
 
@@ -25,14 +27,15 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
 
     private var navController: NavController? = null
 
-    fun initiateController(navController: NavController){
+    override fun initiateController(navController: NavController){
         this.navController = navController
     }
 
-    fun onIntent(intent: HomeIntent){
+    override fun onIntent(intent: HomeIntent){
         when(intent){
             HomeIntent.OnNavigateToAddCard -> navController?.navigate(ScreenModel.NewCard.route)
             HomeIntent.OnGetUserCards -> onHandleUserCards()
+            HomeIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
         }
     }
 

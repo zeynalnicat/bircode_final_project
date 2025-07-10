@@ -15,6 +15,11 @@ object DTextStyle {
         fontSize = 12.sp
     )
 
+    val t12Gray = t12.copy(
+        color = Gray,
+        fontSize = 12.sp
+    )
+
     val t12Bold = TextStyle(
         color = Color.Black,
         fontSize = 12.sp,
@@ -27,10 +32,9 @@ object DTextStyle {
         fontWeight = FontWeight.W500
     )
 
-    val t12Gray = TextStyle(
-        color = Gray,
-        fontSize = 12.sp
-    )
+    val t14Primary = t14.copy(color= Primary)
+
+
 
     val t16 = TextStyle(
         color = Color.Black,

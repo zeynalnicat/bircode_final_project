@@ -37,7 +37,6 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
 
     val topLevelRoutes = listOf(
         TopLevelRoute(ScreenModel.Home.route,"Home", ImageVector.vectorResource(R.drawable.icon_home)),
-        TopLevelRoute(ScreenModel.Profile.route,"Profile", Icons.Default.Person),
         TopLevelRoute(ScreenModel.Settings.route,"Settings", Icons.Default.Settings)
     )
 
@@ -50,7 +49,8 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
                 ScreenModel.SignUp.route,
                 ScreenModel.Login.route,
                 ScreenModel.Pin.route,
-                ScreenModel.NewCard.route
+                ScreenModel.NewCard.route,
+                ScreenModel.Profile.route
             )
 
             if (currentRoute !in hiddenRoutes) {

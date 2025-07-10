@@ -33,7 +33,7 @@ fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController,f
         composable(ScreenModel.Login.route) { LoginScreen(navController,hiltViewModel()) }
         composable(ScreenModel.Settings.route) { SettingsScreen() }
         composable(ScreenModel.Pin.route) { PinScreen(navController,hiltViewModel()) }
-        composable(ScreenModel.Profile.route) { ProfileScreen() }
+        composable(ScreenModel.Profile.route) { ProfileScreen(navController,hiltViewModel()) }
         composable(ScreenModel.NewCard.route) { NewCardScreen(navController,hiltViewModel()) }
 
     }

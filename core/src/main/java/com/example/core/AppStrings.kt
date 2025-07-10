@@ -44,4 +44,9 @@ object AppStrings {
     val buy = "Buy"
 
     val noRecentTransactions = "No recent transactions found"
+
+    val profile = "Profile"
+    val yourName = "Your Name"
+    val email = "Email"
+
 }

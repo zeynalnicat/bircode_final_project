@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.core.AppStrings
+import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.signin.domain.LoginUseCase
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase): ViewModel(){
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase): ViewModel(),
+    CoreViewModel<LoginIntent>{
 
     private val _state = MutableStateFlow(LoginState())
 
@@ -26,14 +28,14 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     private var navController: NavController? = null
 
-    fun initiateController(navController: NavController){
+    override fun initiateController(navController: NavController){
         this.navController = navController
     }
 
     val state = _state.asStateFlow()
     val effect = _effect.asSharedFlow()
 
-    fun onIntent(intent: LoginIntent){
+    override fun onIntent(intent: LoginIntent){
         when(intent){
             is LoginIntent.OnChangeEmail -> _state.update { it.copy(email = intent.email) }
             is LoginIntent.OnChangePassword -> _state.update { it.copy(password = intent.password) }

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.common.presentation.components.BankCard
+import com.example.common.presentation.components.CoreTextField
 import com.example.common.presentation.components.DButton
 import com.example.common.presentation.components.DTextField
 import com.example.common.presentation.theme.Blue
@@ -56,7 +57,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.initiate(navController)
+        viewModel.initiateController(navController)
     }
 
     LaunchedEffect(viewModel.effect) {
@@ -138,7 +139,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
             }
             Spacer(Modifier.height(32.dp))
 
-            DTextField(
+            CoreTextField(
                 value = state.name,
                 placeHolder = AppStrings.nameOnCard,
                 onChange = {viewModel.onIntent(NewCardIntent.OnChangeName(it))}
@@ -146,7 +147,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
 
             Spacer(Modifier.height(16.dp))
 
-            DTextField(
+            CoreTextField(
                 value = state.initialBalance,
                 placeHolder = AppStrings.initialDeposit,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),

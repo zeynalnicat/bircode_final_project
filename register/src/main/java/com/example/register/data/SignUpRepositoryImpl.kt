@@ -20,7 +20,8 @@ class SignUpRepositoryImpl @Inject constructor(val firebaseAuth: FirebaseAuth,va
                 val user = hashMapOf(
                     "userId" to authResult.user?.uid,
                     "name" to name,
-                    "pin" to ""
+                    "pin" to "",
+                    "profilePhoto" to ""
                 )
 
                 collection.add(user)

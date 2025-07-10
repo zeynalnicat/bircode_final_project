@@ -3,6 +3,7 @@ package com.example.newcard.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.newcard.domain.CreateNewCardUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewCardViewModel @Inject constructor(private val createNewCardUseCase: CreateNewCardUseCase): ViewModel() {
+class NewCardViewModel @Inject constructor(private val createNewCardUseCase: CreateNewCardUseCase): ViewModel(), CoreViewModel<NewCardIntent>{
 
     private val _state = MutableStateFlow(NewCardState())
 
@@ -27,11 +28,11 @@ class NewCardViewModel @Inject constructor(private val createNewCardUseCase: Cre
 
     private var navController: NavController? = null
 
-    fun initiate(navController: NavController){
+    override fun initiateController(navController: NavController) {
         this.navController = navController
     }
 
-    fun onIntent(intent: NewCardIntent){
+    override fun onIntent(intent: NewCardIntent){
         when(intent){
             is NewCardIntent.OnChangeColor -> _state.update { it.copy (color = intent.color)}
             is NewCardIntent.OnChangeDeposit -> _state.update { it.copy(initialBalance = intent.deposit) }
@@ -53,4 +54,6 @@ class NewCardViewModel @Inject constructor(private val createNewCardUseCase: Cre
             }
         }
     }
+
+
 }

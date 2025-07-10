@@ -1,16 +1,13 @@
 package com.example.home.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,7 +21,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,9 +45,7 @@ import com.example.common.presentation.theme.Green
 import com.example.common.presentation.theme.Primary
 import com.example.common.presentation.theme.Secondary
 import com.example.core.AppStrings
-import com.example.home.R
-import com.example.home.domain.CardModel
-import com.example.home.domain.TransactionModel
+import com.example.common.R
 import com.example.home.presentation.components.BankCardPager
 import com.example.home.presentation.components.QuickAction
 import com.example.home.presentation.components.RecentTransactions
@@ -95,6 +89,9 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             ) {
                 Column(
+                    modifier = Modifier.clickable{
+                        viewModel.onIntent(HomeIntent.OnNavigateToProfile)
+                    },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {

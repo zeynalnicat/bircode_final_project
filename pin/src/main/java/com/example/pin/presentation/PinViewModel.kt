@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.pin.domain.EnterPinUseCase
@@ -17,18 +18,19 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PinViewModel @Inject constructor(private val pinGetNameUseCase: PinGetNameUseCase,private val enterPinUseCase: EnterPinUseCase): ViewModel(){
+class PinViewModel @Inject constructor(private val pinGetNameUseCase: PinGetNameUseCase,private val enterPinUseCase: EnterPinUseCase): ViewModel(),
+    CoreViewModel<PinIntent>{
 
     private var navController: NavController? = null
 
-    fun initiateController(navController: NavController){
+    override fun initiateController(navController: NavController){
         this.navController = navController
     }
 
     private val _state = MutableStateFlow(PinState())
     val state = _state.asStateFlow()
 
-    fun onIntent(intent: PinIntent){
+    override fun onIntent(intent: PinIntent){
         when(intent) {
             is PinIntent.OnPressDigit -> onHandleNumberPress(intent.digit)
             PinIntent.OnClear -> _state.update { it.copy(pin = List(6){""}, currentIndex = 0, error = "") }

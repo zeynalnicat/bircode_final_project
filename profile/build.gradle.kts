@@ -66,10 +66,16 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+
 
     // Dagger hilt
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Image upload from network
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

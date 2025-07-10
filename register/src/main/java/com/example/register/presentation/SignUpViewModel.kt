@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.core.AppStrings
+import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.register.domain.SignUpUseCase
@@ -19,11 +20,12 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase): ViewModel() {
+class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase): ViewModel(),
+    CoreViewModel<SignUpIntent> {
 
     private var navController: NavController? = null
 
-    fun initiateController(navController: NavController ){
+    override fun initiateController(navController: NavController ){
         this.navController = navController
     }
 
@@ -36,7 +38,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     val state = _state.asStateFlow()
 
 
-    fun onIntent(intent: SignUpIntent){
+    override fun onIntent(intent: SignUpIntent){
         when(intent){
             is SignUpIntent.OnChangeEmail -> _state.update { it.copy(email = intent.email) }
             is SignUpIntent.OnChangeName -> _state.update { it.copy(name = intent.name) }

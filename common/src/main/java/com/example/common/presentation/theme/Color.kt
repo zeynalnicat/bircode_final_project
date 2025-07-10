@@ -21,3 +21,5 @@ val Blue = Color(color = 0xFF4B78FE)
 val Gray = Color(color = 0xFFA4A9AE)
 
 val Yellow = Color(color = 0xFFB0A23B)
+
+val TextFieldGray = Color(color = 0xFFA4A9AE)

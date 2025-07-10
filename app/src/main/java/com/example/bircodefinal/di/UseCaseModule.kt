@@ -7,6 +7,8 @@ import com.example.newcard.domain.NewCardRepository
 import com.example.pin.domain.EnterPinUseCase
 import com.example.pin.domain.PinGetNameUseCase
 import com.example.pin.domain.PinRepository
+import com.example.profile.domain.GetProfileDetailsUseCase
+import com.example.profile.domain.ProfileRepository
 import com.example.register.domain.SignUpRepository
 import com.example.register.domain.SignUpUseCase
 import com.example.signin.domain.LoginRepository
@@ -22,17 +24,20 @@ object UseCaseModule {
 
 
     @Provides
-    fun provideSignUpUseCase(signUpRepository: SignUpRepository): SignUpUseCase = SignUpUseCase(signUpRepository)
+    fun provideSignUpUseCase(signUpRepository: SignUpRepository): SignUpUseCase =
+        SignUpUseCase(signUpRepository)
 
     @Provides
-    fun provideLoginUseCase(loginRepository: LoginRepository): LoginUseCase = LoginUseCase(loginRepository)
+    fun provideLoginUseCase(loginRepository: LoginRepository): LoginUseCase =
+        LoginUseCase(loginRepository)
 
     @Provides
     fun providePinGetNameUseCase(pinRepository: PinRepository): PinGetNameUseCase =
         PinGetNameUseCase(pinRepository)
 
     @Provides
-    fun provideEnterPinUseCase(pinRepository: PinRepository): EnterPinUseCase = EnterPinUseCase(pinRepository)
+    fun provideEnterPinUseCase(pinRepository: PinRepository): EnterPinUseCase =
+        EnterPinUseCase(pinRepository)
 
     @Provides
     fun provideCreateNewCardUseCase(newCardRepository: NewCardRepository): CreateNewCardUseCase =
@@ -42,4 +47,7 @@ object UseCaseModule {
     fun provideGetUserCards(homeRepository: HomeRepository): GetUserCardsUseCase =
         GetUserCardsUseCase(homeRepository)
 
+    @Provides
+    fun provideGetProfileDetails(profileRepository: ProfileRepository): GetProfileDetailsUseCase =
+        GetProfileDetailsUseCase(profileRepository)
 }
