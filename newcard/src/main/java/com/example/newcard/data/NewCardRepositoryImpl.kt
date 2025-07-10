@@ -4,6 +4,7 @@ import com.example.core.Result
 import com.example.newcard.domain.NewCardRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -25,6 +26,7 @@ class NewCardRepositoryImpl @Inject constructor(
             firebaseAuth.currentUser?.let {
                 collection.add(
                     hashMapOf(
+                        "cardId" to UUID.randomUUID().toString(),
                         "userId" to it.uid,
                         "cardHolder" to cardHolder,
                         "color" to cardColor,

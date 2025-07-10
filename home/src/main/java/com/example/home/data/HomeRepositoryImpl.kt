@@ -19,7 +19,7 @@ class HomeRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
                 collection.whereEqualTo("userId",it.uid).get().addOnSuccessListener { snapshots ->
                     if(snapshots.documents.isNotEmpty()){
                         val cards = snapshots.documents.map { document->
-                            CardModel(document.get("cardHolder") as String, document.get("color") as String, document.get("deposit") as String, document.get("cardNumber") as String)
+                            CardModel(document.get("cardId") as String,document.get("cardHolder") as String, document.get("color") as String, document.get("deposit") as String, document.get("cardNumber") as String)
                         }
                         continuation.resume(Result.Success(cards))
                     }else{
