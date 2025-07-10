@@ -10,7 +10,9 @@ import com.example.core.ScreenModel
 import com.example.home.domain.CardModel
 import com.example.home.domain.GetUserCardsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,7 +25,11 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
 
     private val _state = MutableStateFlow(HomeState())
 
+    private val _effect = MutableSharedFlow<HomeUiEffect>()
+
     val state = _state.asStateFlow()
+
+    val effect = _effect.asSharedFlow()
 
     private var navController: NavController? = null
 
@@ -36,6 +42,7 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
             HomeIntent.OnNavigateToAddCard -> navController?.navigate(ScreenModel.NewCard.route)
             HomeIntent.OnGetUserCards -> onHandleUserCards()
             HomeIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
+            is HomeIntent.OnSwipePager -> _state.update { it.copy(currentCardIndex = intent.p1) }
         }
     }
 
@@ -43,7 +50,7 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
 
         viewModelScope.launch {
             when(val res = getUserCardsUseCase.invoke()){
-                is Result.Error -> TODO()
+                is Result.Error -> _effect.emit(HomeUiEffect.OnShowError(res.message))
                 is Result.Success<List<CardModel>> -> _state.update { it.copy(cards = res.data) }
             }
         }

@@ -31,6 +31,7 @@ import com.example.core.AppStrings
 @Composable
 fun BankCard(
     cardHolder: String,
+    cardNumber: String,
     availableBalance: String = "",
     cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
@@ -78,6 +79,8 @@ fun BankCard(
                 )
 
             }
+            val digitNumbers = "**** ".repeat(3) + cardNumber.takeLast(4)
+            Text(digitNumbers, style = DTextStyle.t12)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

@@ -7,6 +7,6 @@ data class HomeState(
     val imgUri:String = "",
     val cards: List<CardModel> = emptyList(),
     val currentCardIndex:Int = 0,
-    val transactions:List<TransactionModel> = emptyList()
+    val transactions:List<TransactionModel> = emptyList(),
 
 )

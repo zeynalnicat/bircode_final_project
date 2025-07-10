@@ -22,10 +22,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -58,6 +61,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val scrollState = rememberScrollState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     val quickActions = listOf(
         QuickActionModel(
             AppStrings.moneyTransfer, Green.copy(alpha = 0.4f), Green,
@@ -79,7 +84,16 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         viewModel.onIntent(HomeIntent.OnGetUserCards)
     }
 
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect {
+            when (it) {
+                is HomeUiEffect.OnShowError -> snackbarHostState.showSnackbar(it.message)
+            }
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -89,7 +103,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             ) {
                 Column(
-                    modifier = Modifier.clickable{
+                    modifier = Modifier.clickable {
                         viewModel.onIntent(HomeIntent.OnNavigateToProfile)
                     },
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -166,7 +180,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                         BankCard(
                             cardColor = Secondary.value,
                             cardHolder = "",
-                            availableBalance = ""
+                            availableBalance = "",
+                            cardNumber = "****"
                         )
                     }
 
@@ -184,7 +199,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
             } else {
                 BankCardPager(
-                    cards = state.cards
+                    cards = state.cards,
+                    onChangePage = { viewModel.onIntent(HomeIntent.OnSwipePager(it)) }
                 )
             }
 

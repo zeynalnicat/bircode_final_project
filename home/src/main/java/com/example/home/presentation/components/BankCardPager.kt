@@ -17,7 +17,8 @@ import com.example.home.domain.CardModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BankCardPager(
-    cards:List<CardModel>
+    cards:List<CardModel>,
+    onChangePage: (Int)->Unit
 ) {
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {cards.size})
@@ -29,8 +30,10 @@ fun BankCardPager(
         modifier = Modifier.fillMaxWidth()
 
     ) { page->
+        onChangePage(page)
         BankCard(
-            cards[page].cardHolder,cards[page].availableBalance.toString(), cardColor = cards[page].cardColor.toULong()
+            cardNumber = cards[page].cardNumber,
+            cardHolder = cards[page].cardHolder, availableBalance = cards[page].availableBalance, cardColor = cards[page].cardColor.toULong()
         )
     }
 

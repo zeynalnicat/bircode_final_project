@@ -37,7 +37,7 @@ fun CoreTextField(
             value = value,
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {onChange},
+            onValueChange = {onChange(it)},
             isError = isError,
             enabled = enabled,
             placeholder = { Text(placeHolder) },

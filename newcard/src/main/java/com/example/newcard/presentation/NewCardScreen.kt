@@ -103,7 +103,8 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
             BankCard(
                 cardHolder = state.name,
                 cardColor = state.color.toULong(),
-                availableBalance = state.initialBalance
+                availableBalance = state.initialBalance,
+                cardNumber = "****"
             )
 
             Spacer(Modifier.height(16.dp))
