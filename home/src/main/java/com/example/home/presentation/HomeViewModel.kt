@@ -43,6 +43,7 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
             HomeIntent.OnGetUserCards -> onHandleUserCards()
             HomeIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
             is HomeIntent.OnSwipePager -> _state.update { it.copy(currentCardIndex = intent.p1) }
+            HomeIntent.OnNavigateToPayBill -> navController?.navigate(ScreenModel.PayBill.route)
         }
     }
 

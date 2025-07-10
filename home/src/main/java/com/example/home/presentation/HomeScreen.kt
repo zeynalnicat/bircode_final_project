@@ -66,14 +66,15 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
     val quickActions = listOf(
         QuickActionModel(
             AppStrings.moneyTransfer, Green.copy(alpha = 0.4f), Green,
-            com.example.common.R.drawable.icon_recycled_dolar
+            R.drawable.icon_recycled_dolar
         ),
         QuickActionModel(
             AppStrings.payBill, Blue.copy(alpha = 0.2f), Blue,
-            com.example.common.R.drawable.icon_thunder
+            R.drawable.icon_thunder,
+            onClick = {viewModel.onIntent(HomeIntent.OnNavigateToPayBill)}
         ), QuickActionModel(
             AppStrings.bankToBank, Gray.copy(alpha = 0.2f), Gray,
-            com.example.common.R.drawable.icon_facility
+            R.drawable.icon_facility
         )
 
 
@@ -220,7 +221,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                             quickActions[index].title,
                             quickActions[index].icon,
                             quickActions[index].containerColor,
-                            quickActions[index].iconColor
+                            quickActions[index].iconColor,
+                            quickActions[index].onClick
                         )
 
                         Spacer(Modifier.width(16.dp))
@@ -254,5 +256,6 @@ data class QuickActionModel(
     val containerColor: Color,
     val iconColor: Color,
     val icon: Int,
+    val onClick: () -> Unit = {}
 
-    )
+)

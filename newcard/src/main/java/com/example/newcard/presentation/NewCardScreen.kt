@@ -40,6 +40,7 @@ import com.example.common.presentation.components.BankCard
 import com.example.common.presentation.components.CoreTextField
 import com.example.common.presentation.components.DButton
 import com.example.common.presentation.components.DTextField
+import com.example.common.presentation.components.DTopBar
 import com.example.common.presentation.theme.Blue
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Gray
@@ -77,22 +78,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
 
     Scaffold(
         topBar = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = "",
-                    tint = Primary,
-                    modifier = Modifier.clickable {navController.popBackStack()})
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(AppStrings.newCardTitle, style = DTextStyle.title.copy(color = Primary))
-                }
-            }
+            DTopBar(AppStrings.newCardTitle) { viewModel.onIntent(NewCardIntent.OnNavigateBack) }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->

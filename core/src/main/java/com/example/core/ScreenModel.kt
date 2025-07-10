@@ -10,4 +10,6 @@ sealed class ScreenModel(val route:String) {
     data object Pin: ScreenModel(route = "Pin")
 
     data object NewCard: ScreenModel(route = "NewCard")
+
+    data object PayBill: ScreenModel(route = "PayBill")
 }

@@ -38,6 +38,7 @@ class NewCardViewModel @Inject constructor(private val createNewCardUseCase: Cre
             is NewCardIntent.OnChangeDeposit -> _state.update { it.copy(initialBalance = intent.deposit) }
             is NewCardIntent.OnChangeName -> _state.update { it.copy(name = intent.name) }
             NewCardIntent.OnHandleSubmit -> createNewCard()
+            NewCardIntent.OnNavigateBack -> navController?.popBackStack()
         }
     }
 

@@ -6,4 +6,6 @@ sealed class NewCardIntent {
     data class OnChangeDeposit(val deposit:String): NewCardIntent()
 
     data object OnHandleSubmit: NewCardIntent()
+
+    data object OnNavigateBack: NewCardIntent()
 }

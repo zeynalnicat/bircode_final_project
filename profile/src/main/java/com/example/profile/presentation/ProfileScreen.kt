@@ -45,6 +45,7 @@ import coil3.Uri
 import coil3.compose.AsyncImage
 import com.example.common.R
 import com.example.common.presentation.components.CoreTextField
+import com.example.common.presentation.components.DTopBar
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Primary
 import com.example.common.presentation.theme.Secondary
@@ -57,7 +58,6 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<android.net.Uri?>(null) }
 
     val launcher = rememberLauncherForActivityResult(
@@ -82,33 +82,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-            ) {
-
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clickable {
-                            viewModel.onIntent(ProfileIntent.OnNavigateBack)
-                        },
-                    tint = Secondary,
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(AppStrings.profile, style = DTextStyle.title.copy(color = Primary))
-                }
-
-
-            }
+            DTopBar(AppStrings.profile) {viewModel.onIntent(ProfileIntent.OnNavigateBack) }
         }
     ) { innerPadding ->
         Column(

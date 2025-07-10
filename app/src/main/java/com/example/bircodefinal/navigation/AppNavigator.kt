@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import com.example.core.ScreenModel
 import com.example.home.presentation.HomeScreen
 import com.example.newcard.presentation.NewCardScreen
+import com.example.paybill.presentation.PayBillScreen
 import com.example.pin.presentation.PinScreen
 import com.example.profile.presentation.ProfileScreen
 import com.example.register.presentation.SignUpScreen
@@ -35,6 +36,7 @@ fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController,f
         composable(ScreenModel.Pin.route) { PinScreen(navController,hiltViewModel()) }
         composable(ScreenModel.Profile.route) { ProfileScreen(navController,hiltViewModel()) }
         composable(ScreenModel.NewCard.route) { NewCardScreen(navController,hiltViewModel()) }
+        composable(ScreenModel.PayBill.route) { PayBillScreen(navController,hiltViewModel()) }
 
     }
 }

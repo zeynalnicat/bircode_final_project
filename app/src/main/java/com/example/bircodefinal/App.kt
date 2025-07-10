@@ -50,7 +50,8 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
                 ScreenModel.Login.route,
                 ScreenModel.Pin.route,
                 ScreenModel.NewCard.route,
-                ScreenModel.Profile.route
+                ScreenModel.Profile.route,
+                ScreenModel.PayBill.route
             )
 
             if (currentRoute !in hiddenRoutes) {

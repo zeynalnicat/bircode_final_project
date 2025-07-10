@@ -48,5 +48,12 @@ object AppStrings {
     val profile = "Profile"
     val yourName = "Your Name"
     val email = "Email"
+    val yourBills = "Your Bills"
+    val internetBill = "Internet Bill"
+    val electricityBill = "Electricity Bill"
+    val waterBill = "Water Bill"
+    val other = "Other "
+
+    val pay ="Pay"
 
 }

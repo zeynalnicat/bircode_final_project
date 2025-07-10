@@ -3,6 +3,7 @@ package com.example.home.presentation.components
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,12 +29,15 @@ fun QuickAction(
     title:String,
     icon: Int,
     containerColor: Color,
-    iconColor: Color
+    iconColor: Color,
+    onClick:()->Unit
 ){
 
 
     Card(
-        modifier = Modifier.border(1.dp,Color.Transparent, RoundedCornerShape(10.dp)).size(width = 120.dp, height = 80.dp),
+        modifier = Modifier.border(1.dp,Color.Transparent, RoundedCornerShape(10.dp)).size(width = 120.dp, height = 80.dp).clickable{
+            onClick()
+        },
         colors = CardColors(
             containerColor = Color.White,
             contentColor = Color.Black,
