@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class PayOperationGetCardsUseCase @Inject constructor(private val payOperationRepository: PayOperationRepository) {
 
-    suspend operator fun invoke(): Result<List<CardModel>>{
+    suspend operator fun invoke(): Result<List<CardModel>> {
         return payOperationRepository.getCards()
     }
 }

@@ -1,5 +1,7 @@
 package com.example.profile.data
 
+import com.example.core.AppErrors
+import com.example.core.AppStrings
 import com.example.core.Result
 import com.example.profile.domain.ProfileModel
 import com.example.profile.domain.ProfileRepository
@@ -34,11 +36,13 @@ class ProfileRepositoryImpl @Inject constructor(
                                 continuation.resume(Result.Success(ProfileModel("", "", "")))
                             }
 
+                        }.addOnFailureListener { ex0->
+                            continuation.resume(Result.Error(AppErrors.unknownError))
                         }
                 }
 
             } catch (e: Exception) {
-                   continuation.resume(Result.Error(e.message ?: "Unexpected Error"))
+                   continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
             }
         }
 }

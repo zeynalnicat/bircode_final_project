@@ -1,5 +1,6 @@
 package com.example.pin.data
 
+import com.example.core.AppErrors
 import com.example.core.Result
 import com.example.pin.domain.PinRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +21,7 @@ class PinRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAu
                          continuation.resume(Result.Success(snapshots.documents[0].get("name") as? String ?: ""))
                      }
                  }.addOnFailureListener {
-                     continuation.resume(Result.Error("Unexpected Error"))
+                     continuation.resume(Result.Error(AppErrors.unknownError))
                  }
 
               }
@@ -42,7 +43,7 @@ class PinRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAu
                             if(pin == dPin ){
                                 continuation.resume(Result.Success(Unit))
                             }else{
-                                continuation.resume(Result.Error("Wrong Pin. Try Again! "))
+                                continuation.resume(Result.Error(AppErrors.wrongPin))
                             }
                         }else{
                             firebaseFirestore.document(collectionId).update(
@@ -62,7 +63,7 @@ class PinRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAu
 
 
         }catch (e: Exception){
-            continuation.resume(Result.Error(message = e.message ?: "Unknown Error"))
+            continuation.resume(Result.Error(message = e.message ?: AppErrors.unknownError))
         }
     }
 }

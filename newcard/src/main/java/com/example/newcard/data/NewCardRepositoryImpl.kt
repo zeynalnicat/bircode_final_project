@@ -1,5 +1,6 @@
 package com.example.newcard.data
 
+import com.example.core.AppErrors
 import com.example.core.Result
 import com.example.newcard.domain.NewCardRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -36,11 +37,11 @@ class NewCardRepositoryImpl @Inject constructor(
                 ).addOnSuccessListener {
                     continuation.resume(Result.Success(Unit))
                 }.addOnFailureListener { ex0 ->
-                    continuation.resume(Result.Error(message = ex0.message ?: "Unexpected Error"))
+                    continuation.resume(Result.Error(message = ex0.message ?: AppErrors.unknownError))
                 }
             }
         } catch (e: Exception) {
-              continuation.resume(Result.Error(e.message ?: "Unexpected Error"))
+              continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
         }
     }
 }

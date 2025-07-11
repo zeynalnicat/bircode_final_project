@@ -2,6 +2,7 @@ package com.example.home.data
 
 import com.example.core.Result
 import com.example.common.domain.CardModel
+import com.example.core.AppErrors
 import com.example.home.domain.HomeRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,11 +39,11 @@ class HomeRepositoryImpl @Inject constructor(
                             }
 
                         }.addOnFailureListener { ex0 ->
-                        continuation.resume(Result.Error(ex0.message ?: "Unexpected Error"))
+                        continuation.resume(Result.Error(ex0.message ?: AppErrors.unknownError))
                     }
                 }
             } catch (e: Exception) {
-                continuation.resume(Result.Error(message = e.message ?: "Unexpected Error"))
+                continuation.resume(Result.Error(message = e.message ?: AppErrors.unknownError))
             }
         }
 }

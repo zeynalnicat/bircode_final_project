@@ -6,6 +6,7 @@ import com.example.newcard.domain.CreateNewCardUseCase
 import com.example.newcard.domain.NewCardRepository
 import com.example.payoperation.domain.PayOperationGetCardsUseCase
 import com.example.payoperation.domain.PayOperationRepository
+import com.example.payoperation.domain.PayOperationSaveTransactionUseCase
 import com.example.pin.domain.EnterPinUseCase
 import com.example.pin.domain.PinGetNameUseCase
 import com.example.pin.domain.PinRepository
@@ -44,14 +45,18 @@ object UseCaseModule {
         CreateNewCardUseCase(newCardRepository)
 
     @Provides
-    fun provideGetUserCards(homeRepository: HomeRepository): GetUserCardsUseCase =
+    fun provideGetUserCardsUseCase(homeRepository: HomeRepository): GetUserCardsUseCase =
         GetUserCardsUseCase(homeRepository)
 
     @Provides
-    fun provideGetProfileDetails(profileRepository: ProfileRepository): GetProfileDetailsUseCase =
+    fun provideGetProfileDetailsUseCase(profileRepository: ProfileRepository): GetProfileDetailsUseCase =
         GetProfileDetailsUseCase(profileRepository)
 
     @Provides
-    fun providePayOperationGetCards(payOperationRepository: PayOperationRepository): PayOperationGetCardsUseCase =
+    fun providePayOperationGetCardsUseCase(payOperationRepository: PayOperationRepository): PayOperationGetCardsUseCase =
         PayOperationGetCardsUseCase(payOperationRepository)
+
+    @Provides
+    fun providePayOperationSaveTransactionUseCase(payOperationRepository: PayOperationRepository): PayOperationSaveTransactionUseCase =
+        PayOperationSaveTransactionUseCase(payOperationRepository)
 }

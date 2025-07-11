@@ -6,4 +6,10 @@ import com.example.core.Result
 interface PayOperationRepository {
 
     suspend fun getCards(): Result<List<CardModel>>
+
+    suspend fun saveTransaction(
+        cardId: String,
+        amount: String,
+        transactionName: String
+    ): Result<Unit>
 }
