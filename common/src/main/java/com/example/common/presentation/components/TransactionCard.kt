@@ -1,4 +1,4 @@
-package com.example.home.presentation.components
+package com.example.common.presentation.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Gray

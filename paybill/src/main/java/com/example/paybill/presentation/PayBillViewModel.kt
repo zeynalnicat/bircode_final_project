@@ -25,7 +25,11 @@ class PayBillViewModel : ViewModel(), CoreViewModel<PayBillIntent> {
             is PayBillIntent.OnChangeAmount -> _state.update { it.copy(amount = intent.amount) }
             is PayBillIntent.OnChangeBillType -> _state.update { it.copy(billType = intent.type) }
             PayBillIntent.OnNavigateBack -> navController?.popBackStack()
-            PayBillIntent.OnNavigateToPayOperation -> navController?.navigate("pay-operation/${_state.value.billType}")
+            PayBillIntent.OnNavigateToPayOperation -> navController?.navigate(
+                ScreenModel.PayOperation.withTransactionType(
+                    _state.value.billType
+                )
+            )
         }
     }
 }

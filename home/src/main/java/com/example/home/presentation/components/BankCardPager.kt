@@ -19,7 +19,8 @@ import com.example.common.domain.CardModel
 @Composable
 fun BankCardPager(
     cards: List<CardModel>,
-    onChangePage: (Int) -> Unit
+    onChangePage: (Int) -> Unit,
+    onClick: () -> Unit,
 ) {
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { cards.size })
@@ -35,11 +36,13 @@ fun BankCardPager(
         modifier = Modifier.fillMaxWidth()
 
     ) { page ->
+
         BankCard(
             cardNumber = cards[page].cardNumber,
             cardHolder = cards[page].cardHolder,
             availableBalance = cards[page].availableBalance,
-            cardColor = cards[page].cardColor.toULong()
+            cardColor = cards[page].cardColor.toULong(),
+            onClick = {onClick()}
         )
     }
 

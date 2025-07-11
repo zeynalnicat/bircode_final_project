@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +51,8 @@ fun App(innerPaddingValues: PaddingValues,firebaseAuth: FirebaseAuth){
                 ScreenModel.NewCard.route,
                 ScreenModel.Profile.route,
                 ScreenModel.PayBill.route,
-                ScreenModel.PayOperation.route
+                ScreenModel.PayOperation.route,
+                ScreenModel.CardDetails.route
             )
 
             if (currentRoute !in hiddenRoutes) {

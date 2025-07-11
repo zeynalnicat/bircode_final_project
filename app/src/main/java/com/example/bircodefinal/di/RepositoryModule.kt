@@ -1,5 +1,7 @@
 package com.example.bircodefinal.di
 
+import com.example.carddetails.data.CardDetailsRepositoryImpl
+import com.example.carddetails.domain.CardDetailsRepository
 import com.example.home.data.HomeRepositoryImpl
 import com.example.home.domain.HomeRepository
 import com.example.newcard.data.NewCardRepositoryImpl
@@ -27,31 +29,58 @@ import dagger.hilt.components.SingletonComponent
 object RepositoryModule {
 
     @Provides
-    fun provideSignRepo(firebaseAuth: FirebaseAuth,firestore: FirebaseFirestore): SignUpRepository =
-        SignUpRepositoryImpl(firebaseAuth,firestore)
+    fun provideSignRepo(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ): SignUpRepository =
+        SignUpRepositoryImpl(firebaseAuth, firestore)
 
     @Provides
-    fun provideLoginRepo(firebaseAuth: FirebaseAuth): LoginRepository = LoginRepositoryImpl(firebaseAuth)
+    fun provideLoginRepo(firebaseAuth: FirebaseAuth): LoginRepository =
+        LoginRepositoryImpl(firebaseAuth)
 
     @Provides
-    fun providePinRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): PinRepository =
-        PinRepositoryImpl(firebaseAuth,firebaseFirestore)
+    fun providePinRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): PinRepository =
+        PinRepositoryImpl(firebaseAuth, firebaseFirestore)
 
     @Provides
-    fun provideNewCardRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): NewCardRepository =
-        NewCardRepositoryImpl(firebaseAuth,firebaseFirestore)
+    fun provideNewCardRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): NewCardRepository =
+        NewCardRepositoryImpl(firebaseAuth, firebaseFirestore)
 
     @Provides
-    fun provideHomeRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): HomeRepository =
-        HomeRepositoryImpl(firebaseAuth,firebaseFirestore)
+    fun provideHomeRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): HomeRepository =
+        HomeRepositoryImpl(firebaseAuth, firebaseFirestore)
 
     @Provides
-    fun provideProfileRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): ProfileRepository =
-        ProfileRepositoryImpl(firebaseAuth,firebaseFirestore)
+    fun provideProfileRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): ProfileRepository =
+        ProfileRepositoryImpl(firebaseAuth, firebaseFirestore)
 
     @Provides
-    fun providePayOperationRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): PayOperationRepository =
-        PayOperationRepositoryImpl(firebaseAuth,firebaseFirestore)
- }
+    fun providePayOperationRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): PayOperationRepository =
+        PayOperationRepositoryImpl(firebaseAuth, firebaseFirestore)
+
+
+    @Provides
+    fun provideCardDetailsRepo(
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
+    ): CardDetailsRepository =
+        CardDetailsRepositoryImpl(firebaseAuth, firebaseFirestore)
+}
 
 

@@ -43,6 +43,7 @@ fun BankCard(
     availableBalance: String = "",
     isPreview: Boolean = false,
     previewAction: ()->Unit = {},
+    onClick: ()->Unit = {},
     cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
     scale: Float = 1f,
@@ -102,7 +103,8 @@ fun BankCard(
            contentColor = contentColor,
            width = width,
            height = height,
-           scale = scale
+           scale = scale,
+           onClick = onClick
        )
     }
 
@@ -115,6 +117,7 @@ private fun BankCardDetails(
     cardNumber:String,
     cardHolder:String,
     cardColor: ULong,
+    onClick: () -> Unit ={},
     contentColor:Color,
     width: Dp,
     height:Dp,
@@ -136,7 +139,9 @@ private fun BankCardDetails(
             1.dp, Color.Transparent,
             RoundedCornerShape(10.dp)
         ).scale(scale)
-        .size(width,height)
+        .size(width,height).clickable{
+            onClick()
+        }
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,

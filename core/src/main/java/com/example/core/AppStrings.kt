@@ -62,5 +62,6 @@ object AppStrings {
     val select = "Select"
 
     val amount = "Amount"
+    val cardDetail = "Card Details"
 
 }

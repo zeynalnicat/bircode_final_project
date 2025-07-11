@@ -1,0 +1,66 @@
+package com.example.carddetails.presentation
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.common.presentation.components.BankCard
+import com.example.common.presentation.components.DTopBar
+import com.example.core.AppStrings
+
+@Composable
+fun CardDetailsScreen(navController: NavController, viewModel: CardDetailViewModel, id: String) {
+
+    val state = viewModel.state.collectAsState().value
+    val snackBarHostState = remember { SnackbarHostState() }
+
+
+    LaunchedEffect(Unit) {
+        viewModel.initiateController(navController)
+        viewModel.onIntent(CardDetailIntent.OnGetCardDetails(id))
+    }
+
+    LaunchedEffect(viewModel.effect) {
+
+        viewModel.effect.collect {
+            when (it) {
+                is CardDetailUiEffect.OnShowError -> snackBarHostState.showSnackbar(it.message)
+            }
+
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackBarHostState)
+        },
+        topBar = {
+            DTopBar(
+                AppStrings.cardDetail
+            ) {
+                viewModel.onIntent(CardDetailIntent.OnNavigateBack)
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            BankCard(
+                cardHolder = state.card.cardHolder,
+                cardNumber = state.card.cardNumber,
+                cardColor = state.card.cardColor.toULong(),
+                availableBalance = state.card.availableBalance
+            )
+        }
+    }
+}

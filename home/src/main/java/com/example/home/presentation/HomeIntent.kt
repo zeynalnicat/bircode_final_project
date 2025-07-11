@@ -7,6 +7,8 @@ sealed class HomeIntent {
 
     data object OnNavigateToPayBill: HomeIntent()
 
+    data object OnNavigateToCardDetails: HomeIntent()
+
     data object OnGetUserCards: HomeIntent()
 
     data class OnSwipePager(val p1:Int): HomeIntent()
