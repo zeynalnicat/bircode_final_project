@@ -44,8 +44,8 @@ fun CoreTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions =  keyboardActions,
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = TextFieldGray.copy(alpha = 0.4f),
-                focusedContainerColor = TextFieldGray.copy(alpha = 0.4f),
+                unfocusedContainerColor = TextFieldGray.copy(alpha = 0.2f),
+                focusedContainerColor = TextFieldGray.copy(alpha = 0.2f),
                 unfocusedTextColor = Color.Black,
                 focusedTextColor = Color.Black,
                 disabledIndicatorColor = Color.Transparent,

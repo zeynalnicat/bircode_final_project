@@ -53,7 +53,7 @@ import com.example.common.presentation.theme.Yellow
 import com.example.core.AppStrings
 
 @Composable
-fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
+fun NewCardScreen(navController: NavController, viewModel: NewCardViewModel) {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -63,7 +63,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect {
-            when(it){
+            when (it) {
                 is NewCardUiEffect.OnShowError -> snackbarHostState.showSnackbar(it.message)
             }
 
@@ -71,8 +71,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
     }
 
 
-
-    val coloredItems = listOf(Gray,Secondary,Primary, Green,  Blue,PurpleGrey40,Pink40, Yellow)
+    val coloredItems = listOf(Pink40, Gray, Secondary, Primary, Green, Blue, PurpleGrey40, Yellow)
 
     val state = viewModel.state.collectAsState().value
 
@@ -84,7 +83,10 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(innerPadding).padding(16.dp).fillMaxSize()
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(16.dp)
+                .fillMaxSize()
         ) {
             BankCard(
                 cardHolder = state.name,
@@ -129,7 +131,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
             CoreTextField(
                 value = state.name,
                 placeHolder = AppStrings.nameOnCard,
-                onChange = {viewModel.onIntent(NewCardIntent.OnChangeName(it))}
+                onChange = { viewModel.onIntent(NewCardIntent.OnChangeName(it)) }
             )
 
             Spacer(Modifier.height(16.dp))
@@ -138,7 +140,7 @@ fun NewCardScreen(navController: NavController,viewModel: NewCardViewModel) {
                 value = state.initialBalance,
                 placeHolder = AppStrings.initialDeposit,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                onChange = {viewModel.onIntent(NewCardIntent.OnChangeDeposit(it))}
+                onChange = { viewModel.onIntent(NewCardIntent.OnChangeDeposit(it)) }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
