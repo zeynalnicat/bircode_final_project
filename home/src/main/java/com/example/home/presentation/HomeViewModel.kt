@@ -49,15 +49,15 @@ class HomeViewModel @Inject constructor(
             HomeIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
             is HomeIntent.OnSwipePager -> _state.update { it.copy(currentCardIndex = intent.p1) }
             HomeIntent.OnNavigateToPayBill -> navController?.navigate(ScreenModel.PayBill.route)
-            is HomeIntent.OnGetCardTransactions -> getCardTransactions(intent.p1)
+            is HomeIntent.OnGetCardTransactions -> getCardTransactions()
         }
     }
 
-    private fun getCardTransactions(p1:Int) {
+    private fun getCardTransactions() {
         if (_state.value.cards.isNotEmpty()) {
             viewModelScope.launch {
                 when (val res =
-                    homeGetCardTransactionsUseCase(_state.value.cards[p1].cardId)) {
+                    homeGetCardTransactionsUseCase(_state.value.cards[_state.value.currentCardIndex].cardId)) {
                     is Result.Error -> _effect.emit(HomeUiEffect.OnShowError(res.message))
                     is Result.Success<List<TransactionModel>> -> {
                         _state.update {
@@ -75,7 +75,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (val res = getUserCardsUseCase.invoke()) {
                 is Result.Error -> _effect.emit(HomeUiEffect.OnShowError(res.message))
-                is Result.Success<List<CardModel>> -> _state.update { it.copy(cards = res.data) }
+                is Result.Success<List<CardModel>> -> {
+                    _state.update { it.copy(cards = res.data) }
+                    getCardTransactions()
+                }
             }
         }
     }

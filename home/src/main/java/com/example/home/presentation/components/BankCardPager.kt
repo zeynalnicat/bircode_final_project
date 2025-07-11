@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.common.presentation.components.BankCard
@@ -23,6 +24,10 @@ fun BankCardPager(
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { cards.size })
 
+    LaunchedEffect(pagerState.currentPage) {
+        onChangePage(pagerState.currentPage)
+    }
+
     HorizontalPager(
         state = pagerState,
         contentPadding = PaddingValues(horizontal = 48.dp),
@@ -30,11 +35,10 @@ fun BankCardPager(
         modifier = Modifier.fillMaxWidth()
 
     ) { page ->
-        onChangePage(page)
         BankCard(
             cardNumber = cards[page].cardNumber,
             cardHolder = cards[page].cardHolder,
-            availableBalance = cards[page].availableBalance.toString(),
+            availableBalance = cards[page].availableBalance,
             cardColor = cards[page].cardColor.toULong()
         )
     }

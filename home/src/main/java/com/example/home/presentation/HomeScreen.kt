@@ -87,7 +87,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
     }
 
     LaunchedEffect(state.currentCardIndex) {
-        viewModel.onIntent(HomeIntent.OnGetCardTransactions(state.currentCardIndex))
+        viewModel.onIntent(HomeIntent.OnGetCardTransactions)
     }
 
     LaunchedEffect(viewModel.effect) {
