@@ -8,7 +8,9 @@ import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.common.domain.CardModel
+import com.example.common.domain.TransactionModel
 import com.example.home.domain.GetUserCardsUseCase
+import com.example.home.domain.HomeGetCardTransactionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUserCardsUseCase): ViewModel(),
+class HomeViewModel @Inject constructor(
+    private val getUserCardsUseCase: GetUserCardsUseCase,
+    private val homeGetCardTransactionsUseCase: HomeGetCardTransactionsUseCase
+) : ViewModel(),
     CoreViewModel<HomeIntent> {
 
     private val _state = MutableStateFlow(HomeState())
@@ -33,30 +38,47 @@ class HomeViewModel @Inject constructor(private val getUserCardsUseCase: GetUser
 
     private var navController: NavController? = null
 
-    override fun initiateController(navController: NavController){
+    override fun initiateController(navController: NavController) {
         this.navController = navController
     }
 
-    override fun onIntent(intent: HomeIntent){
-        when(intent){
+    override fun onIntent(intent: HomeIntent) {
+        when (intent) {
             HomeIntent.OnNavigateToAddCard -> navController?.navigate(ScreenModel.NewCard.route)
             HomeIntent.OnGetUserCards -> onHandleUserCards()
             HomeIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
             is HomeIntent.OnSwipePager -> _state.update { it.copy(currentCardIndex = intent.p1) }
             HomeIntent.OnNavigateToPayBill -> navController?.navigate(ScreenModel.PayBill.route)
+            is HomeIntent.OnGetCardTransactions -> getCardTransactions(intent.p1)
         }
     }
 
-    private fun onHandleUserCards(){
+    private fun getCardTransactions(p1:Int) {
+        if (_state.value.cards.isNotEmpty()) {
+            viewModelScope.launch {
+                when (val res =
+                    homeGetCardTransactionsUseCase(_state.value.cards[p1].cardId)) {
+                    is Result.Error -> _effect.emit(HomeUiEffect.OnShowError(res.message))
+                    is Result.Success<List<TransactionModel>> -> {
+                        _state.update {
+                            it.copy(transactions = res.data)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun onHandleUserCards() {
 
         viewModelScope.launch {
-            when(val res = getUserCardsUseCase.invoke()){
+            when (val res = getUserCardsUseCase.invoke()) {
                 is Result.Error -> _effect.emit(HomeUiEffect.OnShowError(res.message))
                 is Result.Success<List<CardModel>> -> _state.update { it.copy(cards = res.data) }
             }
         }
     }
-
 
 
 }

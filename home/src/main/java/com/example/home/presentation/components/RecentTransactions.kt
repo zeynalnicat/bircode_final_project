@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.common.presentation.theme.DTextStyle
 import com.example.core.AppStrings
-import com.example.home.domain.TransactionModel
+import com.example.common.domain.TransactionModel
 
 
 @Composable

@@ -71,7 +71,8 @@ class PayOperationRepositoryImpl @Inject constructor(
                         "userId" to auth.uid,
                         "amount" to amount,
                         "transactionName" to transactionName,
-                        "date" to LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                        "date" to LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        "isExpense" to true
 
                     )
                 ).addOnSuccessListener {

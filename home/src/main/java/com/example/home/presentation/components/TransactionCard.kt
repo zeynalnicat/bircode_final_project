@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Gray
 import com.example.common.presentation.theme.Green
-import com.example.home.domain.TransactionModel
+import com.example.common.domain.TransactionModel
 
 @Composable
 fun TransactionCard(

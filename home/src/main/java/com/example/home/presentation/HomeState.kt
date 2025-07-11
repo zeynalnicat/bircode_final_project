@@ -1,7 +1,7 @@
 package com.example.home.presentation
 
 import com.example.common.domain.CardModel
-import com.example.home.domain.TransactionModel
+import com.example.common.domain.TransactionModel
 
 data class HomeState(
     val imgUri:String = "",

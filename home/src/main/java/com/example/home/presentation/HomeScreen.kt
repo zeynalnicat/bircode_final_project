@@ -83,6 +83,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
     LaunchedEffect(Unit) {
         viewModel.initiateController(navController)
         viewModel.onIntent(HomeIntent.OnGetUserCards)
+
+    }
+
+    LaunchedEffect(state.currentCardIndex) {
+        viewModel.onIntent(HomeIntent.OnGetCardTransactions(state.currentCardIndex))
     }
 
     LaunchedEffect(viewModel.effect) {

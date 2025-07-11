@@ -1,4 +1,4 @@
-package com.example.home.domain
+package com.example.common.domain
 
 data class TransactionModel(
     val id:String,
