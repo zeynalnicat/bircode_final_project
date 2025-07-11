@@ -1,5 +1,6 @@
 package com.example.home.domain
 
+import com.example.common.domain.CardModel
 import com.example.core.Result
 import javax.inject.Inject
 

@@ -50,8 +50,10 @@ fun PayBillScreen(navController: NavController, viewModel: PayBillViewModel) {
             Spacer(Modifier.height(32.dp))
 
             DButton(
-                title = AppStrings.pay,
-                onClick = {}
+                title = AppStrings.select,
+                onClick = {
+                    viewModel.onIntent(PayBillIntent.OnNavigateToPayOperation)
+                }
             )
 
         }

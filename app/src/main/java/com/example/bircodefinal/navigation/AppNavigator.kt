@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.core.ScreenModel
 import com.example.home.presentation.HomeScreen
 import com.example.newcard.presentation.NewCardScreen
 import com.example.paybill.presentation.PayBillScreen
+import com.example.payoperation.presentation.PayOperationScreen
 import com.example.pin.presentation.PinScreen
 import com.example.profile.presentation.ProfileScreen
 import com.example.register.presentation.SignUpScreen
@@ -37,6 +40,10 @@ fun AppNavigator(innerPadding: PaddingValues, navController: NavHostController,f
         composable(ScreenModel.Profile.route) { ProfileScreen(navController,hiltViewModel()) }
         composable(ScreenModel.NewCard.route) { NewCardScreen(navController,hiltViewModel()) }
         composable(ScreenModel.PayBill.route) { PayBillScreen(navController,hiltViewModel()) }
+        composable(ScreenModel.PayOperation.route,arguments = listOf(navArgument("transactionType") { type = NavType.StringType })
+        ) {backStackEntry->
+            val transactionType = backStackEntry.arguments?.get("transactionType") as? String ?: ""
+            PayOperationScreen(navController,hiltViewModel(),transactionType) }
 
     }
 }

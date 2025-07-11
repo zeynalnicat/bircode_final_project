@@ -4,6 +4,8 @@ import com.example.home.data.HomeRepositoryImpl
 import com.example.home.domain.HomeRepository
 import com.example.newcard.data.NewCardRepositoryImpl
 import com.example.newcard.domain.NewCardRepository
+import com.example.payoperation.data.PayOperationRepositoryImpl
+import com.example.payoperation.domain.PayOperationRepository
 import com.example.pin.data.PinRepositoryImpl
 import com.example.pin.domain.PinRepository
 import com.example.profile.data.ProfileRepositoryImpl
@@ -46,6 +48,10 @@ object RepositoryModule {
     @Provides
     fun provideProfileRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): ProfileRepository =
         ProfileRepositoryImpl(firebaseAuth,firebaseFirestore)
+
+    @Provides
+    fun providePayOperationRepo(firebaseAuth: FirebaseAuth,firebaseFirestore: FirebaseFirestore): PayOperationRepository =
+        PayOperationRepositoryImpl(firebaseAuth,firebaseFirestore)
  }
 
 

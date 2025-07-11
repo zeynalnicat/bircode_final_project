@@ -56,4 +56,11 @@ object AppStrings {
 
     val pay ="Pay"
 
+    val payment = "Payment"
+
+    val selectCard = "Select card to proceed"
+    val select = "Select"
+
+    val amount = "Amount"
+
 }

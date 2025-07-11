@@ -11,17 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.common.presentation.components.BankCard
-import com.example.home.domain.CardModel
+import com.example.common.domain.CardModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BankCardPager(
-    cards:List<CardModel>,
-    onChangePage: (Int)->Unit
+    cards: List<CardModel>,
+    onChangePage: (Int) -> Unit
 ) {
 
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = {cards.size})
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { cards.size })
 
     HorizontalPager(
         state = pagerState,
@@ -29,11 +29,13 @@ fun BankCardPager(
         pageSpacing = 8.dp,
         modifier = Modifier.fillMaxWidth()
 
-    ) { page->
+    ) { page ->
         onChangePage(page)
         BankCard(
             cardNumber = cards[page].cardNumber,
-            cardHolder = cards[page].cardHolder, availableBalance = cards[page].availableBalance, cardColor = cards[page].cardColor.toULong()
+            cardHolder = cards[page].cardHolder,
+            availableBalance = cards[page].availableBalance.toString(),
+            cardColor = cards[page].cardColor.toULong()
         )
     }
 

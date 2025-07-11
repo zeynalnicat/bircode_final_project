@@ -26,7 +26,7 @@ val TextFieldGray = Color(color = 0xFFA4A9AE)
 
 val Green10 = Color(0xFFB9F3E4)
 
-val Red10 = Color(0xFFB9F3E4)
+val Red10 = Color(0xFFFF6363)
 
 val Blue10 = Color(0xFFD0E1FF)
 

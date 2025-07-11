@@ -2,14 +2,18 @@ package com.example.core
 
 sealed class ScreenModel(val route:String) {
 
-    data object Home: ScreenModel(route = "Home")
-    data object SignUp: ScreenModel(route = "SignUp")
-    data object Login:ScreenModel(route = "Login")
-    data object Settings: ScreenModel(route = "Settings")
-    data object Profile: ScreenModel(route = "Profile")
-    data object Pin: ScreenModel(route = "Pin")
+    data object Home: ScreenModel(route = "home")
+    data object SignUp: ScreenModel(route = "signup")
+    data object Login:ScreenModel(route = "login")
+    data object Settings: ScreenModel(route = "settings")
+    data object Profile: ScreenModel(route = "profile")
+    data object Pin: ScreenModel(route = "pin")
 
-    data object NewCard: ScreenModel(route = "NewCard")
+    data object NewCard: ScreenModel(route = "new-card")
 
-    data object PayBill: ScreenModel(route = "PayBill")
+    data object PayBill: ScreenModel(route = "pay-bill")
+
+    data object PayOperation:ScreenModel(route = "pay-operation/{transactionType}"){
+        fun withTransactionType(transactionType:String) = "pay-operation/$transactionType"
+    }
 }

@@ -158,44 +158,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
             if (state.cards.isEmpty()) {
 
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .clickable {
-                            viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
-                        },
-                    contentAlignment = Alignment.Center
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .graphicsLayer {
-                                alpha = 0.9f
-                                shadowElevation = 8.dp.toPx()
-                                shape = RoundedCornerShape(20.dp)
-                                clip = true
-                            }
-                            .blur(16.dp)
-                    ) {
-                        BankCard(
-                            cardColor = Secondary.value,
-                            cardHolder = "",
-                            availableBalance = "",
-                            cardNumber = "****"
-                        )
-                    }
-
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable {
-                                viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
-                            }
-                    )
-                }
+                BankCard(
+                    cardHolder = "",
+                    cardNumber = "****",
+                    isPreview = true
+                )
 
 
             } else {

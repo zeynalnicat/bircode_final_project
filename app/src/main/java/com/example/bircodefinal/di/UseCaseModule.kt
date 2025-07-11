@@ -4,6 +4,8 @@ import com.example.home.domain.GetUserCardsUseCase
 import com.example.home.domain.HomeRepository
 import com.example.newcard.domain.CreateNewCardUseCase
 import com.example.newcard.domain.NewCardRepository
+import com.example.payoperation.domain.PayOperationGetCardsUseCase
+import com.example.payoperation.domain.PayOperationRepository
 import com.example.pin.domain.EnterPinUseCase
 import com.example.pin.domain.PinGetNameUseCase
 import com.example.pin.domain.PinRepository
@@ -21,8 +23,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
-
-
     @Provides
     fun provideSignUpUseCase(signUpRepository: SignUpRepository): SignUpUseCase =
         SignUpUseCase(signUpRepository)
@@ -50,4 +50,8 @@ object UseCaseModule {
     @Provides
     fun provideGetProfileDetails(profileRepository: ProfileRepository): GetProfileDetailsUseCase =
         GetProfileDetailsUseCase(profileRepository)
+
+    @Provides
+    fun providePayOperationGetCards(payOperationRepository: PayOperationRepository): PayOperationGetCardsUseCase =
+        PayOperationGetCardsUseCase(payOperationRepository)
 }

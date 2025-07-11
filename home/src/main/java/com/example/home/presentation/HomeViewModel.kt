@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
-import com.example.home.domain.CardModel
+import com.example.common.domain.CardModel
 import com.example.home.domain.GetUserCardsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
