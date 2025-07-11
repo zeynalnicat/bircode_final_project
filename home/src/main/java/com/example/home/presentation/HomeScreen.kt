@@ -61,8 +61,9 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val quickActions = listOf(
         QuickActionModel(
-            AppStrings.moneyTransfer, Green.copy(alpha = 0.4f), Green,
-            R.drawable.icon_recycled_dolar
+            AppStrings.topUp, Green.copy(alpha = 0.4f), Green,
+            R.drawable.icon_recycled_dolar,
+            onClick = {viewModel.onIntent(HomeIntent.OnNavigateToPayOperation)}
         ),
         QuickActionModel(
             AppStrings.payBill, Blue.copy(alpha = 0.2f), Blue,
@@ -194,7 +195,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                             quickActions[index].onClick
                         )
 
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(8.dp))
 
 
                     }

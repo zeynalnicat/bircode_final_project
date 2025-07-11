@@ -2,6 +2,7 @@ package com.example.carddetails.data
 
 import com.example.carddetails.domain.CardDetailsRepository
 import com.example.common.domain.CardModel
+import com.example.common.domain.TransactionModel
 import com.example.core.AppErrors
 import com.example.core.Result
 import com.google.firebase.auth.FirebaseAuth
@@ -41,6 +42,41 @@ class CardDetailsRepositoryImpl @Inject constructor(
                         }
                 }
 
+            } catch (e: Exception) {
+                continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
+            }
+        }
+
+    override suspend fun getCardTransactions(cardId: String): Result<List<TransactionModel>> =
+        suspendCoroutine { continuation ->
+            try {
+                firebaseAuth.currentUser?.let { auth ->
+                    transactionCollection.whereEqualTo("userId", auth.uid)
+                        .whereEqualTo("cardId", cardId).get().addOnSuccessListener { snapshots ->
+                            if (snapshots.documents.isNotEmpty()) {
+                                val transactions = snapshots.documents.map { document ->
+                                    TransactionModel(
+                                        id = document.get("transactionId") as String,
+                                        transactionName = document.get("transactionName") as String,
+                                        isExpense = document.get("isExpense") as Boolean,
+                                        date = document.get("date") as String,
+                                        amount = document.get("amount") as String,
+                                        userId = auth.uid,
+                                        cardId = cardId
+                                    )
+                                }
+                                continuation.resume(Result.Success(transactions))
+                            } else {
+                                continuation.resume(Result.Success(emptyList()))
+                            }
+                        }.addOnFailureListener { ex0 ->
+                            continuation.resume(
+                                Result.Error(
+                                    ex0.message ?: AppErrors.unknownError
+                                )
+                            )
+                        }
+                }
             } catch (e: Exception) {
                 continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
             }

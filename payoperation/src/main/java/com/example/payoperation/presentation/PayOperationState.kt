@@ -9,5 +9,6 @@ data class PayOperationState(
     val selectedCardId: String = "",
     val isLoading: Boolean = false,
     val error :String = "",
+    val isTopUp: Boolean = false
 
 )

@@ -45,7 +45,8 @@ import com.example.core.AppStrings
 fun PayOperationScreen(
     navController: NavController,
     viewModel: PayOperationViewModel,
-    transactionType: String
+    transactionType: String,
+    isTopUp: Boolean
 ) {
 
     val expanded = remember { mutableStateOf(false) }
@@ -56,6 +57,7 @@ fun PayOperationScreen(
 
     LaunchedEffect(Unit) {
         viewModel.initiateController(navController)
+        viewModel.onIntent(PayOperationIntent.OnSetIsTopUp(isTopUp))
         viewModel.onIntent(PayOperationIntent.OnGetCards)
         viewModel.onIntent(PayOperationIntent.OnSetTransactionType(transactionType))
     }
@@ -118,6 +120,7 @@ fun PayOperationScreen(
                             cardColor = selectedCard.cardColor.toULong(),
                             cardNumber = selectedCard.cardNumber,
                             availableBalance = selectedCard.availableBalance,
+                            isDropDownItem = true
                         )
 
                     }
@@ -153,7 +156,8 @@ fun PayOperationScreen(
                                     cardColor = card.cardColor.toULong(),
                                     height = 150.dp,
                                     availableBalance = card.availableBalance,
-                                    scale = 0.3f
+                                    scale = 0.3f,
+                                    isDropDownItem = true
                                 )
 
                                 Spacer(Modifier.width(12.dp))
@@ -182,6 +186,7 @@ fun PayOperationScreen(
                         cardHolder = "",
                         cardNumber = "****",
                         scale = 0.3f,
+                        isDropDownItem = true,
                         isPreview = true
                     )
 
@@ -197,7 +202,7 @@ fun PayOperationScreen(
 
 
             CoreTextField(
-                value = state.amount.toString(),
+                value = state.amount,
                 onChange = {viewModel.onIntent(PayOperationIntent.OnSetAmount(it))},
                 placeHolder = AppStrings.amount,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),

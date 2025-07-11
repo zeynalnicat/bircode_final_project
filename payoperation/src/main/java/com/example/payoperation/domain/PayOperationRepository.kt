@@ -12,4 +12,6 @@ interface PayOperationRepository {
         amount: String,
         transactionName: String
     ): Result<Unit>
+
+    suspend fun topUpBalance(cardId: String,amount:String,transactionName:String):Result<Unit>
 }

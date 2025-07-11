@@ -13,8 +13,8 @@ sealed class ScreenModel(val route:String) {
 
     data object PayBill: ScreenModel(route = "pay-bill")
 
-    data object PayOperation:ScreenModel(route = "pay-operation/{transactionType}"){
-        fun withTransactionType(transactionType:String) = "pay-operation/$transactionType"
+    data object PayOperation:ScreenModel(route = "pay-operation/{transactionType}/{isTopUp}"){
+        fun withTransactionType(transactionType:String,isTopUp: Boolean) = "pay-operation/$transactionType/$isTopUp"
     }
     data object CardDetails: ScreenModel(route = "card-details/{id}"){
         fun withId(id:String) = "card-details/$id"

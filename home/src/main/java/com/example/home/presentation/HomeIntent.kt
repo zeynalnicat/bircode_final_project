@@ -7,6 +7,8 @@ sealed class HomeIntent {
 
     data object OnNavigateToPayBill: HomeIntent()
 
+    data object OnNavigateToPayOperation:HomeIntent()
+
     data object OnNavigateToCardDetails: HomeIntent()
 
     data object OnGetUserCards: HomeIntent()

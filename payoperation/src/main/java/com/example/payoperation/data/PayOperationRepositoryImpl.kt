@@ -105,4 +105,53 @@ class PayOperationRepositoryImpl @Inject constructor(
         }
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun topUpBalance(
+        cardId: String,
+        amount: String,
+        transactionName: String
+    ): Result<Unit> = suspendCoroutine{ continuation ->
+        try {
+            firebaseAuth.currentUser?.let { auth ->
+                transactionCollection.add(
+                    hashMapOf(
+                        "transactionId" to UUID.randomUUID().toString(),
+                        "cardId" to cardId,
+                        "userId" to auth.uid,
+                        "amount" to amount,
+                        "transactionName" to transactionName,
+                        "date" to LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        "isExpense" to false
+
+                    )
+                ).addOnSuccessListener {
+                    collection.whereEqualTo("userId", auth.uid).whereEqualTo("cardId", cardId).get()
+                        .addOnSuccessListener { cSnapshot ->
+                            val reference = cSnapshot.documents[0].reference.path
+                            val newAmount =
+                                (cSnapshot.documents[0].get("deposit") as String).toInt() + amount.toInt()
+                            firebaseFirestore.document(reference).update(
+                                "deposit", newAmount.toString()
+                            ).addOnSuccessListener {
+                                continuation.resume(Result.Success(Unit))
+                            }.addOnFailureListener { ex0 ->
+                                continuation.resume(
+                                    Result.Error(
+                                        ex0.message ?: AppErrors.unknownError
+                                    )
+                                )
+                            }
+
+                        }
+
+                }.addOnFailureListener { ex0 ->
+                    continuation.resume(Result.Error(ex0.message ?: AppErrors.unknownError))
+                }
+            }
+
+        } catch (e: Exception) {
+            continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
+        }
+    }
 }

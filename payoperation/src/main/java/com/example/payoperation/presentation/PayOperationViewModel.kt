@@ -9,6 +9,7 @@ import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.payoperation.domain.PayOperationGetCardsUseCase
+import com.example.payoperation.domain.PayOperationOnTopUpUseCase
 import com.example.payoperation.domain.PayOperationSaveTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PayOperationViewModel @Inject constructor(
     private val payOperationGetCardsUseCase: PayOperationGetCardsUseCase,
-    private val payOperationSaveTransactionUseCase: PayOperationSaveTransactionUseCase
+    private val payOperationSaveTransactionUseCase: PayOperationSaveTransactionUseCase,
+    private val payOperationOnTopUpUseCase: PayOperationOnTopUpUseCase
 ) : ViewModel(), CoreViewModel<PayOperationIntent> {
 
     private var navController: NavController? = null
@@ -54,6 +56,7 @@ class PayOperationViewModel @Inject constructor(
 
             is PayOperationIntent.OnSetAmount -> _state.update { it.copy(amount = intent.amount) }
             PayOperationIntent.OnHandleSubmit -> onHandleSubmit()
+            is PayOperationIntent.OnSetIsTopUp -> _state.update { it.copy(isTopUp = intent.isTopUp) }
         }
     }
 
@@ -63,24 +66,46 @@ class PayOperationViewModel @Inject constructor(
         if (selectedCard != null && selectedCard.availableBalance.toInt() < _state.value.amount.toInt()) {
             _state.update { it.copy(error = AppErrors.notEnoughAmount, isLoading = false) }
         } else {
-            viewModelScope.launch {
-                when (val res = payOperationSaveTransactionUseCase.invoke(
-                    _state.value.selectedCardId,
-                    _state.value.amount,
-                    _state.value.transactionType
-                )) {
-                    is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                    is Result.Success<*> -> {
-                        navController?.navigate(ScreenModel.Home.route) {
-                            popUpTo(ScreenModel.PayOperation.route) {
+            if (_state.value.isTopUp) {
+                viewModelScope.launch {
+                    when (val res = payOperationOnTopUpUseCase.invoke(
+                        _state.value.selectedCardId,
+                        _state.value.amount,
+                        _state.value.transactionType
+                    )) {
+                        is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                        is Result.Success<*> -> {
+                            navController?.navigate(ScreenModel.Home.route) {
+                                popUpTo(ScreenModel.PayOperation.route) {
 
+                                }
+                                popUpTo(ScreenModel.PayBill.route) { inclusive = true }
                             }
-                            popUpTo(ScreenModel.PayBill.route) { inclusive = true}
+                            _state.update { it.copy(error = "", isLoading = false) }
                         }
-                        _state.update { it.copy(error = "", isLoading = false) }
+                    }
+                }
+            } else {
+                viewModelScope.launch {
+                    when (val res = payOperationSaveTransactionUseCase.invoke(
+                        _state.value.selectedCardId,
+                        _state.value.amount,
+                        _state.value.transactionType
+                    )) {
+                        is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                        is Result.Success<*> -> {
+                            navController?.navigate(ScreenModel.Home.route) {
+                                popUpTo(ScreenModel.PayOperation.route) {
+
+                                }
+                                popUpTo(ScreenModel.PayBill.route) { inclusive = true }
+                            }
+                            _state.update { it.copy(error = "", isLoading = false) }
+                        }
                     }
                 }
             }
+
         }
     }
 

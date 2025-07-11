@@ -64,4 +64,6 @@ object AppStrings {
     val amount = "Amount"
     val cardDetail = "Card Details"
 
+    val topUp = "Top Up"
+
 }

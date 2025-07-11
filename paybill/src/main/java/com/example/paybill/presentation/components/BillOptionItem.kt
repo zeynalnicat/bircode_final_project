@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.common.presentation.theme.DTextStyle
 
 @Composable
 fun BillOptionItem(option: BillOption, selected: Boolean, onClick: () -> Unit) {
@@ -53,8 +54,7 @@ fun BillOptionItem(option: BillOption, selected: Boolean, onClick: () -> Unit) {
 
         Text(
             text = option.title,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = DTextStyle.t14Primary,
             color = Color(0xFF1C1C1E),
             modifier = Modifier.weight(1f)
         )

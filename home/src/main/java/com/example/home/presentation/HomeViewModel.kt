@@ -9,6 +9,7 @@ import com.example.core.Result
 import com.example.core.ScreenModel
 import com.example.common.domain.CardModel
 import com.example.common.domain.TransactionModel
+import com.example.core.AppStrings
 import com.example.home.domain.GetUserCardsUseCase
 import com.example.home.domain.HomeGetCardTransactionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,10 @@ class HomeViewModel @Inject constructor(
                 ScreenModel.CardDetails.withId(
                     _state.value.cards[_state.value.currentCardIndex].cardId
                 )
+            )
+
+            HomeIntent.OnNavigateToPayOperation -> navController?.navigate(
+                ScreenModel.PayOperation.withTransactionType(AppStrings.topUp,true)
             )
         }
     }

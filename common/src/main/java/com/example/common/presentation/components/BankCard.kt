@@ -42,8 +42,9 @@ fun BankCard(
     cardNumber: String,
     availableBalance: String = "",
     isPreview: Boolean = false,
-    previewAction: ()->Unit = {},
-    onClick: ()->Unit = {},
+    previewAction: () -> Unit = {},
+    isDropDownItem: Boolean = false,
+    onClick: () -> Unit = {},
     cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
     scale: Float = 1f,
@@ -51,10 +52,11 @@ fun BankCard(
     height: Dp = 200.dp,
 ) {
 
-    if(isPreview){
+    if (isPreview) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 16.dp).size(width,height)
+                .padding(horizontal = 16.dp)
+                .size(width, height)
                 .clickable {
                     previewAction()
                 },
@@ -80,7 +82,8 @@ fun BankCard(
                     contentColor = contentColor,
                     width = width,
                     height = height,
-                    scale = scale
+                    scale = scale,
+                    isDropDownItem = isDropDownItem
                 )
             }
 
@@ -94,18 +97,19 @@ fun BankCard(
                     }
             )
         }
-    }else{
-       BankCardDetails(
-           availableBalance = availableBalance,
-           cardNumber = cardNumber,
-           cardHolder = cardHolder,
-           cardColor = cardColor,
-           contentColor = contentColor,
-           width = width,
-           height = height,
-           scale = scale,
-           onClick = onClick
-       )
+    } else {
+        BankCardDetails(
+            availableBalance = availableBalance,
+            cardNumber = cardNumber,
+            cardHolder = cardHolder,
+            cardColor = cardColor,
+            contentColor = contentColor,
+            width = width,
+            height = height,
+            scale = scale,
+            onClick = onClick,
+            isDropDownItem = isDropDownItem
+        )
     }
 
 
@@ -113,81 +117,88 @@ fun BankCard(
 
 @Composable
 private fun BankCardDetails(
-    availableBalance:String,
-    cardNumber:String,
-    cardHolder:String,
+    availableBalance: String,
+    cardNumber: String,
+    cardHolder: String,
     cardColor: ULong,
-    onClick: () -> Unit ={},
-    contentColor:Color,
+    onClick: () -> Unit = {},
+    isDropDownItem: Boolean,
+    contentColor: Color,
     width: Dp,
-    height:Dp,
-    scale:Float,
+    height: Dp,
+    scale: Float,
 
 
-){
-
-    Card(
-    colors = CardColors(
-        containerColor = Color(cardColor),
-        contentColor = contentColor,
-        disabledContainerColor = Color(cardColor),
-        disabledContentColor = contentColor,
-    ),
-    modifier = Modifier
-        .size(width = width, height = height)
-        .border(
-            1.dp, Color.Transparent,
-            RoundedCornerShape(10.dp)
-        ).scale(scale)
-        .size(width,height).clickable{
-            onClick()
-        }
-) {
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 40.dp, end = 25.dp, top = 30.dp, bottom = 30.dp),
     ) {
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+    Card(
+        colors = CardColors(
+            containerColor = Color(cardColor),
+            contentColor = contentColor,
+            disabledContainerColor = Color(cardColor),
+            disabledContentColor = contentColor,
+        ),
+        modifier = Modifier
+            .size(width = width, height = height)
+            .border(
+                1.dp, Color.Transparent,
+                RoundedCornerShape(10.dp)
+            )
+            .scale(scale)
+            .size(width, height)
+            .clickable {
+                if (!isDropDownItem) onClick() else null
+            }
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 40.dp, end = 25.dp, top = 30.dp, bottom = 30.dp),
         ) {
-            Column {
-                Text(AppStrings.availableBalance, style = DTextStyle.t12)
-                Spacer(Modifier.height(10.dp))
-                Text("\$$availableBalance ", style = DTextStyle.title.copy(color = Color.White))
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column {
+                    Text(AppStrings.availableBalance, style = DTextStyle.t12)
+                    Spacer(Modifier.height(10.dp))
+                    Text("\$$availableBalance ", style = DTextStyle.title.copy(color = Color.White))
+                }
+
+
+                Image(
+                    modifier = Modifier.size(40.dp),
+                    painter = painterResource(com.example.common.R.drawable.card_censor),
+                    contentDescription = "",
+                )
+
+            }
+            val digitNumbers = "**** ".repeat(3) + cardNumber.takeLast(4)
+            Text(digitNumbers, style = DTextStyle.t12)
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column {
+                    Text(AppStrings.cardHolder, style = DTextStyle.t12)
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        cardHolder,
+                        style = DTextStyle.title.copy(color = Color.White, fontSize = 14.sp)
+                    )
+                }
+                Image(
+                    modifier = Modifier.size(32.dp),
+                    painter = painterResource(com.example.common.R.drawable.card_type),
+                    contentDescription = ""
+                )
             }
 
-
-            Image(
-                modifier = Modifier.size(40.dp),
-                painter = painterResource(com.example.common.R.drawable.card_censor),
-                contentDescription = "",
-            )
-
         }
-        val digitNumbers = "**** ".repeat(3) + cardNumber.takeLast(4)
-        Text(digitNumbers, style = DTextStyle.t12)
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column {
-                Text(AppStrings.cardHolder, style = DTextStyle.t12)
-                Spacer(Modifier.height(10.dp))
-                Text(cardHolder, style = DTextStyle.title.copy(color = Color.White, fontSize = 14.sp))
-            }
-            Image(
-                modifier = Modifier.size(32.dp),
-                painter = painterResource(com.example.common.R.drawable.card_type),
-                contentDescription = ""
-            )
-        }
-
     }
-}}
+}
