@@ -89,7 +89,7 @@ fun PayOperationScreen(
             Text(AppStrings.selectCard, style = DTextStyle.t14Primary)
 
             if (state.cards.isNotEmpty()) {
-                Box(
+                Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     val selectedCard =
@@ -101,6 +101,7 @@ fun PayOperationScreen(
                             ""
                         )
                     Row(
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .clip(RoundedCornerShape(12.dp))
@@ -117,11 +118,8 @@ fun PayOperationScreen(
                             cardColor = selectedCard.cardColor.toULong(),
                             cardNumber = selectedCard.cardNumber,
                             availableBalance = selectedCard.availableBalance,
-                            height = 150.dp,
-                            scale = 0.3f
                         )
 
-                        Text("\$${selectedCard.availableBalance}", style = DTextStyle.t14Primary)
                     }
 
                     DropdownMenu(
