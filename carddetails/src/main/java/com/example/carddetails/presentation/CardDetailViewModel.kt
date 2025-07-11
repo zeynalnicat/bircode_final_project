@@ -41,7 +41,7 @@ class CardDetailViewModel @Inject constructor(private val cardUseCase: CardDetai
 
     private fun onGetCardDetails(cardId:String){
         viewModelScope.launch {
-            when(val res = cardUseCase(_state.value.card.cardId)){
+            when(val res = cardUseCase(cardId)){
                 is Result.Error -> _effect.emit(CardDetailUiEffect.OnShowError(res.message))
                 is Result.Success<CardModel> -> _state.update { it.copy(card = res.data) }
             }
