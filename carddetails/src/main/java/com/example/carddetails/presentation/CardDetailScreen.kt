@@ -58,7 +58,7 @@ fun CardDetailsScreen(navController: NavController, viewModel: CardDetailViewMod
         }
     ) { innerPadding ->
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(innerPadding)

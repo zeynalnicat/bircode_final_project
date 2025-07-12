@@ -20,7 +20,7 @@ import com.example.common.domain.CardModel
 fun BankCardPager(
     cards: List<CardModel>,
     onChangePage: (Int) -> Unit,
-    onClick: () -> Unit,
+    onClick: (String) -> Unit,
 ) {
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { cards.size })
@@ -42,7 +42,7 @@ fun BankCardPager(
             cardHolder = cards[page].cardHolder,
             availableBalance = cards[page].availableBalance,
             cardColor = cards[page].cardColor.toULong(),
-            onClick = {onClick()}
+            onClick = {onClick(cards[page].cardId)}
         )
     }
 

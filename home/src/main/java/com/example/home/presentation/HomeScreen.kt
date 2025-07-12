@@ -171,7 +171,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 BankCardPager(
                     cards = state.cards,
                     onChangePage = { viewModel.onIntent(HomeIntent.OnSwipePager(it)) },
-                    onClick = {viewModel.onIntent(HomeIntent.OnNavigateToCardDetails)}
+                    onClick = {viewModel.onIntent(HomeIntent.OnNavigateToCardDetails(it))}
                 )
             }
 
@@ -184,23 +184,29 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 Text(AppStrings.quickActions, style = DTextStyle.t16)
                 Spacer(Modifier.height(16.dp))
 
-                LazyRow {
-                    items(quickActions.size) { index ->
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    LazyRow {
+                        items(quickActions.size) { index ->
 
-                        QuickAction(
-                            quickActions[index].title,
-                            quickActions[index].icon,
-                            quickActions[index].containerColor,
-                            quickActions[index].iconColor,
-                            quickActions[index].onClick
-                        )
+                            QuickAction(
+                                quickActions[index].title,
+                                quickActions[index].icon,
+                                quickActions[index].containerColor,
+                                quickActions[index].iconColor,
+                                quickActions[index].onClick
+                            )
 
-                        Spacer(Modifier.width(8.dp))
+                            Spacer(Modifier.width(8.dp))
 
+
+                        }
 
                     }
-
                 }
+
 
                 Spacer(Modifier.height(32.dp))
 

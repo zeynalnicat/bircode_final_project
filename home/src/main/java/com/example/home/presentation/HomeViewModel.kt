@@ -51,9 +51,9 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.OnSwipePager -> _state.update { it.copy(currentCardIndex = intent.p1) }
             HomeIntent.OnNavigateToPayBill -> navController?.navigate(ScreenModel.PayBill.route)
             is HomeIntent.OnGetCardTransactions -> getCardTransactions()
-            HomeIntent.OnNavigateToCardDetails -> navController?.navigate(
+            is HomeIntent.OnNavigateToCardDetails -> navController?.navigate(
                 ScreenModel.CardDetails.withId(
-                    _state.value.cards[_state.value.currentCardIndex].cardId
+                    intent.id
                 )
             )
 

@@ -63,29 +63,33 @@ class PayOperationViewModel @Inject constructor(
     private fun onHandleSubmit() {
         _state.update { it.copy(error = "", isLoading = true) }
         val selectedCard = _state.value.cards.find { it.cardId == _state.value.selectedCardId }
-        if (selectedCard != null && selectedCard.availableBalance.toInt() < _state.value.amount.toInt()) {
-            _state.update { it.copy(error = AppErrors.notEnoughAmount, isLoading = false) }
-        } else {
-            if (_state.value.isTopUp) {
-                viewModelScope.launch {
-                    when (val res = payOperationOnTopUpUseCase.invoke(
-                        _state.value.selectedCardId,
-                        _state.value.amount,
-                        _state.value.transactionType
-                    )) {
-                        is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                        is Result.Success<*> -> {
-                            navController?.navigate(ScreenModel.Home.route) {
-                                popUpTo(ScreenModel.PayOperation.route) {
 
-                                }
-                                popUpTo(ScreenModel.PayBill.route) { inclusive = true }
+        if (_state.value.isTopUp) {
+            viewModelScope.launch {
+                when (val res = payOperationOnTopUpUseCase.invoke(
+                    _state.value.selectedCardId,
+                    _state.value.amount,
+                    _state.value.transactionType
+                )) {
+                    is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                    is Result.Success<*> -> {
+                        navController?.navigate(ScreenModel.Home.route) {
+                            popUpTo(ScreenModel.PayOperation.route) {
+
                             }
-                            _state.update { it.copy(error = "", isLoading = false) }
+                            popUpTo(ScreenModel.PayBill.route) { inclusive = true }
                         }
+                        _state.update { it.copy(error = "", isLoading = false) }
                     }
                 }
+            }
+
+
+        }else{
+            if (selectedCard != null && selectedCard.availableBalance.toInt() < _state.value.amount.toInt()) {
+                _state.update { it.copy(error = AppErrors.notEnoughAmount, isLoading = false) }
             } else {
+
                 viewModelScope.launch {
                     when (val res = payOperationSaveTransactionUseCase.invoke(
                         _state.value.selectedCardId,
@@ -104,22 +108,24 @@ class PayOperationViewModel @Inject constructor(
                         }
                     }
                 }
-            }
 
+
+            }
         }
+
     }
 
-    private fun getCards() {
-        viewModelScope.launch {
-            when (val res = payOperationGetCardsUseCase()) {
-                is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                is Result.Success<List<CardModel>> -> _state.update {
-                    it.copy(
-                        cards = res.data,
-                        selectedCardId = res.data[0].cardId
-                    )
+        private fun getCards() {
+            viewModelScope.launch {
+                when (val res = payOperationGetCardsUseCase()) {
+                    is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                    is Result.Success<List<CardModel>> -> _state.update {
+                        it.copy(
+                            cards = res.data,
+                            selectedCardId = res.data[0].cardId
+                        )
+                    }
                 }
             }
         }
     }
-}

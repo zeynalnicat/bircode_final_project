@@ -9,7 +9,7 @@ sealed class HomeIntent {
 
     data object OnNavigateToPayOperation:HomeIntent()
 
-    data object OnNavigateToCardDetails: HomeIntent()
+    data class OnNavigateToCardDetails(val id:String): HomeIntent()
 
     data object OnGetUserCards: HomeIntent()
 
