@@ -67,7 +67,7 @@ object DTextStyle {
     )
 
     val digit = TextStyle(
-        color = Color.White,
+        color = Primary,
         fontWeight = FontWeight.W600
     )
 

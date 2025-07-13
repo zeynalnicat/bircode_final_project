@@ -31,7 +31,7 @@ object AppStrings {
     val cardHolder = "Card Holder"
 
     val quickActions = "Quick Actions"
-    val moneyTransfer = "Money Transfer"
+    val moneyTransfer = "Transfer"
     val payBill = "Pay Bill"
     val bankToBank = "Bank to Bank"
     val recentTransactions = "Recent Transactions"
@@ -73,5 +73,6 @@ object AppStrings {
     val dueDate ="Due Date"
 
     val transactionStatus = "Transactions Status: Paid"
+    val cardNumber = "Receiver card number"
 
 }

@@ -38,6 +38,7 @@ import com.example.common.presentation.components.DButton
 import com.example.common.presentation.components.DTopBar
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Secondary
+import com.example.common.presentation.theme.TextFieldGray
 import com.example.core.AppStrings
 
 @Composable
@@ -46,7 +47,8 @@ fun PayOperationScreen(
     navController: NavController,
     viewModel: PayOperationViewModel,
     transactionType: String,
-    isTopUp: Boolean
+    isTopUp: Boolean,
+    isBankToBank: Boolean,
 ) {
 
     val expanded = remember { mutableStateOf(false) }
@@ -75,7 +77,7 @@ fun PayOperationScreen(
         snackbarHost = {SnackbarHost(snackbarHostState)},
         topBar = {
             DTopBar(
-                AppStrings.payment
+                if(!isBankToBank) AppStrings.payment else AppStrings.bankToBank
             ) {
                 viewModel.onIntent(PayOperationIntent.OnNavigateBack)
             }
@@ -109,7 +111,7 @@ fun PayOperationScreen(
                             .clip(RoundedCornerShape(12.dp))
                             .fillMaxWidth()
                             .background(
-                                Color.White
+                                TextFieldGray.copy(0.1f)
                             )
                             .clickable {
                                 expanded.value = !expanded.value
@@ -190,13 +192,22 @@ fun PayOperationScreen(
                         isPreview = true
                     )
 
-
-
-
-
                 }
 
             }
+
+          if(isBankToBank){
+              Text(AppStrings.cardNumber, style = DTextStyle.t14Primary)
+
+
+              CoreTextField(
+                  value = state.receiverCardNumber,
+                  supportingText = state.error,
+                  onChange = {viewModel.onIntent(PayOperationIntent.OnSetReceiverCardNumber(it))},
+                  placeHolder = AppStrings.amount,
+                  keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+              )
+          }
 
           Text(AppStrings.amount, style = DTextStyle.t14Primary)
 
@@ -214,11 +225,20 @@ fun PayOperationScreen(
             }
             Spacer(Modifier.height(16.dp))
 
-            DButton(
-                title = AppStrings.pay,
-                loading = state.isLoading,
-                onClick = {viewModel.onIntent(PayOperationIntent.OnHandleSubmit)}
-            )
+            if(!isBankToBank){
+                DButton(
+                    title = AppStrings.pay,
+                    loading = state.isLoading,
+                    onClick = {viewModel.onIntent(PayOperationIntent.OnHandleSubmit)}
+                )
+            }else{
+                DButton(
+                    title = AppStrings.moneyTransfer,
+                    loading = state.isLoading,
+                    onClick = {viewModel.onIntent(PayOperationIntent.OnHandleTransfer)}
+                )
+            }
+
 
         }
     }

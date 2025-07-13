@@ -71,7 +71,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
             onClick = { viewModel.onIntent(HomeIntent.OnNavigateToPayBill) }
         ), QuickActionModel(
             AppStrings.bankToBank, Gray.copy(alpha = 0.2f), Gray,
-            R.drawable.icon_facility
+            R.drawable.icon_facility,
+            onClick = { viewModel.onIntent(HomeIntent.OnNavigateToBankToBank) }
         )
 
 

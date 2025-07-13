@@ -49,7 +49,7 @@ fun PinScreen(navController: NavController, viewModel: PinViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Primary)
+            .background(Color.White)
             .padding(top = 32.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -61,14 +61,14 @@ fun PinScreen(navController: NavController, viewModel: PinViewModel) {
         ) {
             Text(
                 text = "Welcome",
-                color = Color.White.copy(alpha = 0.9f),
+                color = Primary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Light
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = state.name,
-                color = Color.White,
+                color = Primary,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -110,13 +110,14 @@ fun PinScreen(navController: NavController, viewModel: PinViewModel) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
             Card(
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 24.dp),
-                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 10.dp, bottomEnd = 10.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.1f)
+                    containerColor = Primary.copy(alpha = 0.1f)
                 )
             ) {
                 for (i in 0..2) {

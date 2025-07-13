@@ -53,11 +53,15 @@ fun AppNavigator(
                 navArgument("isTopUp") {
                     type =
                         NavType.BoolType
+                },
+                navArgument("isBankToBank"){
+                    type = NavType.BoolType
                 })
         ) { backStackEntry ->
             val transactionType = backStackEntry.arguments?.get("transactionType") as? String ?: ""
             val isTopUp = backStackEntry.arguments?.get("isTopUp") as? Boolean ?: false
-            PayOperationScreen(navController, hiltViewModel(), transactionType, isTopUp)
+            val isBankToBank = backStackEntry.arguments?.get("isBankToBank") as? Boolean?: false
+            PayOperationScreen(navController, hiltViewModel(), transactionType, isTopUp,isBankToBank)
         }
 
         composable(ScreenModel.CardDetails.route, arguments = listOf(navArgument("id") {

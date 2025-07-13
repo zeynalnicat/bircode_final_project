@@ -27,7 +27,7 @@ class PayBillViewModel : ViewModel(), CoreViewModel<PayBillIntent> {
             PayBillIntent.OnNavigateBack -> navController?.popBackStack()
             PayBillIntent.OnNavigateToPayOperation -> navController?.navigate(
                 ScreenModel.PayOperation.withTransactionType(
-                    _state.value.billType,false
+                    _state.value.billType, false, false
                 )
             )
         }

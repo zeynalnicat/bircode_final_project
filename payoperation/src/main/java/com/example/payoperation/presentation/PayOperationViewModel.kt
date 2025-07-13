@@ -57,7 +57,17 @@ class PayOperationViewModel @Inject constructor(
             is PayOperationIntent.OnSetAmount -> _state.update { it.copy(amount = intent.amount) }
             PayOperationIntent.OnHandleSubmit -> onHandleSubmit()
             is PayOperationIntent.OnSetIsTopUp -> _state.update { it.copy(isTopUp = intent.isTopUp) }
+            PayOperationIntent.OnHandleTransfer -> onHandleTransfer()
+            is PayOperationIntent.OnSetReceiverCardNumber -> _state.update {
+                it.copy(
+                    receiverCardNumber = intent.number
+                )
+            }
         }
+    }
+
+    private fun onHandleTransfer() {
+
     }
 
     private fun onHandleSubmit() {
@@ -85,7 +95,7 @@ class PayOperationViewModel @Inject constructor(
             }
 
 
-        }else{
+        } else {
             if (selectedCard != null && selectedCard.availableBalance.toInt() < _state.value.amount.toInt()) {
                 _state.update { it.copy(error = AppErrors.notEnoughAmount, isLoading = false) }
             } else {
@@ -115,17 +125,17 @@ class PayOperationViewModel @Inject constructor(
 
     }
 
-        private fun getCards() {
-            viewModelScope.launch {
-                when (val res = payOperationGetCardsUseCase()) {
-                    is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                    is Result.Success<List<CardModel>> -> _state.update {
-                        it.copy(
-                            cards = res.data,
-                            selectedCardId = res.data[0].cardId
-                        )
-                    }
+    private fun getCards() {
+        viewModelScope.launch {
+            when (val res = payOperationGetCardsUseCase()) {
+                is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                is Result.Success<List<CardModel>> -> _state.update {
+                    it.copy(
+                        cards = res.data,
+                        selectedCardId = res.data[0].cardId
+                    )
                 }
             }
         }
     }
+}
