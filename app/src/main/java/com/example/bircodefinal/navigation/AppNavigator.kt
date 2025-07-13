@@ -21,6 +21,7 @@ import com.example.profile.presentation.ProfileScreen
 import com.example.register.presentation.SignUpScreen
 import com.example.settings.presentation.SettingsScreen
 import com.example.signin.presentation.LoginScreen
+import com.example.transactionreceipt.presentation.TransactionDetailScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -47,12 +48,16 @@ fun AppNavigator(
         composable(ScreenModel.PayBill.route) { PayBillScreen(navController, hiltViewModel()) }
         composable(
             ScreenModel.PayOperation.route,
-            arguments = listOf(navArgument("transactionType") { type = NavType.StringType },navArgument("isTopUp"){type =
-                NavType.BoolType})
+            arguments = listOf(
+                navArgument("transactionType") { type = NavType.StringType },
+                navArgument("isTopUp") {
+                    type =
+                        NavType.BoolType
+                })
         ) { backStackEntry ->
             val transactionType = backStackEntry.arguments?.get("transactionType") as? String ?: ""
             val isTopUp = backStackEntry.arguments?.get("isTopUp") as? Boolean ?: false
-            PayOperationScreen(navController, hiltViewModel(), transactionType,isTopUp)
+            PayOperationScreen(navController, hiltViewModel(), transactionType, isTopUp)
         }
 
         composable(ScreenModel.CardDetails.route, arguments = listOf(navArgument("id") {
@@ -61,6 +66,13 @@ fun AppNavigator(
         })) { backStackEntry ->
             val id = backStackEntry.arguments?.get("id") as? String ?: ""
             CardDetailsScreen(navController, hiltViewModel(), id)
+        }
+
+        composable(ScreenModel.TransactionDetails.route, arguments = listOf(navArgument("id") {
+            type = NavType.StringType
+        })) { backStackEntry ->
+            val id = backStackEntry.arguments?.get("id") as? String ?: ""
+            TransactionDetailScreen(navController, hiltViewModel(), id)
         }
 
 

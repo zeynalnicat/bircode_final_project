@@ -20,6 +20,8 @@ import com.example.register.domain.SignUpRepository
 import com.example.register.domain.SignUpUseCase
 import com.example.signin.domain.LoginRepository
 import com.example.signin.domain.LoginUseCase
+import com.example.transactionreceipt.domain.GetTransactionDetailsUseCase
+import com.example.transactionreceipt.domain.TransactionDetailRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,4 +77,8 @@ object UseCaseModule {
     @Provides
     fun providePayOperationTopUpUseCase(payOperationRepository: PayOperationRepository): PayOperationOnTopUpUseCase =
         PayOperationOnTopUpUseCase(payOperationRepository)
+
+    @Provides
+    fun provideGetTransactionDetailsUseCase(transactionDetailRepository: TransactionDetailRepository): GetTransactionDetailsUseCase =
+        GetTransactionDetailsUseCase(transactionDetailRepository)
 }

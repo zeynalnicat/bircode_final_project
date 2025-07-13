@@ -58,7 +58,13 @@ class HomeViewModel @Inject constructor(
             )
 
             HomeIntent.OnNavigateToPayOperation -> navController?.navigate(
-                ScreenModel.PayOperation.withTransactionType(AppStrings.topUp,true)
+                ScreenModel.PayOperation.withTransactionType(AppStrings.topUp, true)
+            )
+
+            is HomeIntent.OnNavigateToTransactionDetails -> navController?.navigate(
+                ScreenModel.TransactionDetails.withId(
+                    intent.id
+                )
             )
         }
     }

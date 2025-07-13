@@ -8,4 +8,5 @@ data class TransactionModel(
     val isExpense: Boolean,
     val amount:String,
     val transactionName:String,
+    val name: String = ""
 )

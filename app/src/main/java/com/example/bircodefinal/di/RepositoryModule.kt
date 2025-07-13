@@ -16,6 +16,8 @@ import com.example.register.data.SignUpRepositoryImpl
 import com.example.register.domain.SignUpRepository
 import com.example.signin.data.LoginRepositoryImpl
 import com.example.signin.domain.LoginRepository
+import com.example.transactionreceipt.data.TransactionDetailRepositoryImpl
+import com.example.transactionreceipt.domain.TransactionDetailRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -81,6 +83,11 @@ object RepositoryModule {
         firebaseFirestore: FirebaseFirestore
     ): CardDetailsRepository =
         CardDetailsRepositoryImpl(firebaseAuth, firebaseFirestore)
+
+    @Provides
+    fun provideTransactionDetailRepo(
+        firebaseFirestore: FirebaseFirestore
+    ): TransactionDetailRepository = TransactionDetailRepositoryImpl(firebaseFirestore)
 }
 
 

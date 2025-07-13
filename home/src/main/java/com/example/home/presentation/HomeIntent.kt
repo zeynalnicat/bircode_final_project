@@ -9,6 +9,8 @@ sealed class HomeIntent {
 
     data object OnNavigateToPayOperation:HomeIntent()
 
+    data class OnNavigateToTransactionDetails(val id:String): HomeIntent()
+
     data class OnNavigateToCardDetails(val id:String): HomeIntent()
 
     data object OnGetUserCards: HomeIntent()
@@ -16,5 +18,7 @@ sealed class HomeIntent {
     data class OnSwipePager(val p1:Int): HomeIntent()
 
     data object OnGetCardTransactions: HomeIntent()
+
+
 
 }

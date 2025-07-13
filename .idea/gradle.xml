@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/register" />
             <option value="$PROJECT_DIR$/settings" />
             <option value="$PROJECT_DIR$/signin" />
+            <option value="$PROJECT_DIR$/transactionreceipt" />
           </set>
         </option>
       </GradleProjectSettings>

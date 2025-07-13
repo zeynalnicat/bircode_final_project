@@ -1,5 +1,6 @@
 package com.example.common.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +22,8 @@ import com.example.common.domain.TransactionModel
 
 @Composable
 fun RecentTransactions(
-    transactions: List<TransactionModel>
+    transactions: List<TransactionModel>,
+    onClick: (String)->Unit
 ) {
 
     Column(
@@ -55,7 +57,9 @@ fun RecentTransactions(
             else{
                 transactions.forEach {
                         Column(
-                            Modifier.padding(8.dp)
+                            Modifier.padding(8.dp).clickable{
+                                onClick(it.id)
+                            }
                         ) {
                             TransactionCard(
                                 it

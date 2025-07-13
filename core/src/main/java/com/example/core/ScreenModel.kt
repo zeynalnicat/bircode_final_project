@@ -19,4 +19,8 @@ sealed class ScreenModel(val route:String) {
     data object CardDetails: ScreenModel(route = "card-details/{id}"){
         fun withId(id:String) = "card-details/$id"
     }
+
+    data object TransactionDetails: ScreenModel(route = "transaction-details/{id}"){
+        fun withId(id:String) = "transaction-details/$id"
+    }
 }

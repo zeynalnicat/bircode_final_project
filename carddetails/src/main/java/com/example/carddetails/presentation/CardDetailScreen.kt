@@ -74,7 +74,8 @@ fun CardDetailsScreen(navController: NavController, viewModel: CardDetailViewMod
             )
 
             RecentTransactions(
-                state.transactions
+                state.transactions,
+                onClick = { viewModel.onIntent(CardDetailIntent.OnNavigateToTransactionDetails(it)) }
             )
         }
     }

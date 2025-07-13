@@ -9,6 +9,7 @@ import com.example.common.domain.CardModel
 import com.example.common.domain.TransactionModel
 import com.example.core.CoreViewModel
 import com.example.core.Result
+import com.example.core.ScreenModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +43,8 @@ class CardDetailViewModel @Inject constructor(
             CardDetailIntent.OnNavigateBack -> navController?.popBackStack()
             is CardDetailIntent.OnGetCardDetails -> onGetCardDetails(intent.cardId)
             is CardDetailIntent.OnGetCardTransactions -> onGetCardTransactions(intent.cardId)
+            is CardDetailIntent.OnNavigateToTransactionDetails -> navController?.navigate(
+                ScreenModel.TransactionDetails.withId(intent.id))
         }
     }
 

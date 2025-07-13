@@ -66,4 +66,10 @@ object AppStrings {
 
     val topUp = "Top Up"
 
+    val transactionDetail = "Transaction detail"
+
+    val billNumber = "Bill Number"
+
+    val dueDate ="Due Date"
+
 }

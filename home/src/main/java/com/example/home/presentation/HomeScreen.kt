@@ -63,12 +63,12 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         QuickActionModel(
             AppStrings.topUp, Green.copy(alpha = 0.4f), Green,
             R.drawable.icon_recycled_dolar,
-            onClick = {viewModel.onIntent(HomeIntent.OnNavigateToPayOperation)}
+            onClick = { viewModel.onIntent(HomeIntent.OnNavigateToPayOperation) }
         ),
         QuickActionModel(
             AppStrings.payBill, Blue.copy(alpha = 0.2f), Blue,
             R.drawable.icon_thunder,
-            onClick = {viewModel.onIntent(HomeIntent.OnNavigateToPayBill)}
+            onClick = { viewModel.onIntent(HomeIntent.OnNavigateToPayBill) }
         ), QuickActionModel(
             AppStrings.bankToBank, Gray.copy(alpha = 0.2f), Gray,
             R.drawable.icon_facility
@@ -171,7 +171,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 BankCardPager(
                     cards = state.cards,
                     onChangePage = { viewModel.onIntent(HomeIntent.OnSwipePager(it)) },
-                    onClick = {viewModel.onIntent(HomeIntent.OnNavigateToCardDetails(it))}
+                    onClick = { viewModel.onIntent(HomeIntent.OnNavigateToCardDetails(it)) }
                 )
             }
 
@@ -215,7 +215,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 Spacer(Modifier.height(16.dp))
 
                 RecentTransactions(
-                    state.transactions
+                    state.transactions,
+                    onClick = { viewModel.onIntent(HomeIntent.OnNavigateToTransactionDetails(it)) }
                 )
 
 

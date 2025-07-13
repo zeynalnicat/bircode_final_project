@@ -1,5 +1,6 @@
 package com.example.common.presentation.theme
 
+import android.R
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +33,8 @@ object DTextStyle {
         fontWeight = FontWeight.W500
     )
 
+    val t14Gray = t14.copy(color = Gray)
+
     val t14Primary = t14.copy(color= Primary)
 
 
@@ -41,6 +44,8 @@ object DTextStyle {
         fontSize = 16.sp,
         fontWeight = FontWeight.W600
     )
+
+    val t16Primary = t16.copy(color = Primary)
 
     val title = TextStyle(
         fontWeight = FontWeight.W800,
