@@ -72,4 +72,6 @@ object AppStrings {
 
     val dueDate ="Due Date"
 
+    val transactionStatus = "Transactions Status: Paid"
+
 }

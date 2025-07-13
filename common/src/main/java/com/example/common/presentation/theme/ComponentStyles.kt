@@ -38,7 +38,6 @@ object DTextStyle {
     val t14Primary = t14.copy(color= Primary)
 
 
-
     val t16 = TextStyle(
         color = Color.Black,
         fontSize = 16.sp,
@@ -46,6 +45,14 @@ object DTextStyle {
     )
 
     val t16Primary = t16.copy(color = Primary)
+
+    val t18 = TextStyle(
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.W600
+    )
+
+    val t18Primary = t18.copy(color = Primary)
 
     val title = TextStyle(
         fontWeight = FontWeight.W800,
