@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -136,7 +136,8 @@ fun TransactionDetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(AppStrings.billNumber, style = DTextStyle.t14Gray)
-                    Text(state.id, style = DTextStyle.t14Primary)
+                    Spacer(Modifier.width(12.dp))
+                    Text(state.id, style = DTextStyle.t14Primary, maxLines = 1)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
