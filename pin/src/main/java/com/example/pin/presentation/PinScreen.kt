@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.common.presentation.components.DTopBar
 import com.example.common.presentation.theme.DTextStyle
 import com.example.common.presentation.theme.Primary
 import com.example.common.presentation.theme.Secondary
@@ -34,129 +37,161 @@ import com.example.pin.presentation.components.NumberButton
 
 
 @Composable
-fun PinScreen(navController: NavController, viewModel: PinViewModel) {
+fun PinScreen(navController: NavController, viewModel: PinViewModel, isChangePin: Boolean) {
 
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(PinIntent.OnGetName)
         viewModel.initiateController(navController)
+        viewModel.onIntent(PinIntent.OnSetIsChangePinScreen(isChangePin))
     }
 
     val state = viewModel.state.collectAsState().value
     var kt = -1
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(top = 32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Scaffold(
+        topBar = {
+            if (isChangePin) {
+                DTopBar("") {
+                    viewModel.onIntent(PinIntent.OnNavigateBack)
+                }
+            } else {
+                null
+            }
+        }
+    ) { innerPadding ->
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(bottom = 48.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+                .padding(top = 32.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Welcome",
-                color = Primary,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Light
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = state.name,
-                color = Primary,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Medium
-            )
-        }
 
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(bottom = 48.dp)
+            ) {
 
-        Text(AppStrings.enterPin, style = DTextStyle.title)
-
-        Spacer(Modifier.height(16.dp))
-
-
-        Row {
-            state.pin.forEachIndexed { index, digit ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .border(
-                            2.dp,
-                            if (state.currentIndex == index) Secondary else Secondary.copy(alpha = 0.3f),
-                            RoundedCornerShape(12.dp)
-                        )
-                        .size(40.dp)
-                ) {
-                    Text(if (digit.isNotEmpty()) "*" else "", style = DTextStyle.digit)
+                if (!isChangePin) {
+                    Text(
+                        text = AppStrings.welcome,
+                        color = Primary,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Light
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = state.name,
+                        color = Primary,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                } else {
+                    Text(
+                        text = AppStrings.changePin,
+                        color = Primary,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Light
+                    )
                 }
-                Spacer(Modifier.width(16.dp))
+
             }
 
-        }
 
-        if(state.error.isNotEmpty()){
+            Text(AppStrings.enterPin, style = DTextStyle.title)
 
             Spacer(Modifier.height(16.dp))
-            Text(state.error, style = DTextStyle.error)
-        }
 
-        Spacer(Modifier.height(32.dp))
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            Row {
+                state.pin.forEachIndexed { index, digit ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .border(
+                                2.dp,
+                                if (state.currentIndex == index) Secondary else Secondary.copy(alpha = 0.3f),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .size(40.dp)
+                    ) {
+                        Text(if (digit.isNotEmpty()) "*" else "", style = DTextStyle.digit)
+                    }
+                    Spacer(Modifier.width(16.dp))
+                }
 
-        ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 24.dp),
-                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 10.dp, bottomEnd = 10.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Primary.copy(alpha = 0.1f)
-                )
+            }
+
+            if (state.error.isNotEmpty()) {
+
+                Spacer(Modifier.height(16.dp))
+                Text(state.error, style = DTextStyle.error)
+            }
+
+            Spacer(Modifier.height(32.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+
             ) {
-                for (i in 0..2) {
-                    kt += 2
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 24.dp),
+                    shape = RoundedCornerShape(
+                        topStart = 24.dp,
+                        topEnd = 24.dp,
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Primary.copy(alpha = 0.1f)
+                    )
+                ) {
+                    for (i in 0..2) {
+                        kt += 2
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            for (k in 0..2) {
+                                var digit = i + k + kt
+                                NumberButton(digit.toString()) {
+                                    viewModel.onIntent(
+                                        PinIntent.OnPressDigit(
+                                            digit.toString()
+                                        )
+                                    )
+                                }
+                            }
+                        }
+
+                    }
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        for (k in 0..2) {
-                            var digit = i + k + kt
-                            NumberButton(digit.toString()) {
-                                viewModel.onIntent(
-                                    PinIntent.OnPressDigit(
-                                        digit.toString()
-                                    )
-                                )
-                            }
-                        }
+                        NumberButton("Clear") { viewModel.onIntent(PinIntent.OnClear) }
+                        NumberButton("0") { viewModel.onIntent(PinIntent.OnPressDigit("0")) }
+                        NumberButton("⌫") { viewModel.onIntent(PinIntent.OnRemoveDigit) }
                     }
-
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    NumberButton("Clear") { viewModel.onIntent(PinIntent.OnClear) }
-                    NumberButton("0") { viewModel.onIntent(PinIntent.OnPressDigit("0")) }
-                    NumberButton("⌫") { viewModel.onIntent(PinIntent.OnRemoveDigit) }
-                }
-        }
+
+            }
 
 
         }
-
-
     }
+
+
 }

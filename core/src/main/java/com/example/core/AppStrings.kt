@@ -7,6 +7,8 @@ object AppStrings {
     val namePlaceHolder = "Name"
     val createAccount = "Create an Account"
 
+    val welcome = "Welcome"
+
     val settings = "Settings"
 
     val login = "Login"
@@ -49,6 +51,8 @@ object AppStrings {
 
     val profile = "Profile"
     val yourName = "Your Name"
+
+    val changePin = "Change pin"
     val email = "Email"
     val yourBills = "Your Bills"
     val internetBill = "Internet Bill"

@@ -32,14 +32,15 @@ class SettingsViewModel @Inject constructor(private val logoutUseCase: LogoutUse
         when (intent) {
             SettingsIntent.OnLogOut -> onLogOut()
             SettingsIntent.OnNavigateToProfile -> navController?.navigate(ScreenModel.Profile.route)
+            SettingsIntent.OnNavigateToPin -> navController?.navigate(ScreenModel.Pin.withIsChangePin(true))
         }
     }
 
     private fun onLogOut() {
         viewModelScope.launch {
-            when(val res = logoutUseCase()){
+            when (val res = logoutUseCase()) {
                 is Result.Error -> _effect.emit(SettingsUiEffect.OnShowError(res.message))
-                is Result.Success<*> -> navController?.navigate(ScreenModel.SignUp.route){
+                is Result.Success<*> -> navController?.navigate(ScreenModel.SignUp.route) {
                     popUpTo(ScreenModel.Settings.route) { inclusive = true }
                 }
             }

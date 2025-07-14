@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
+import com.example.pin.domain.ChangePinUseCase
 import com.example.pin.domain.EnterPinUseCase
 import com.example.pin.domain.PinGetNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,71 +19,113 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PinViewModel @Inject constructor(private val pinGetNameUseCase: PinGetNameUseCase,private val enterPinUseCase: EnterPinUseCase): ViewModel(),
-    CoreViewModel<PinIntent>{
+class PinViewModel @Inject constructor(
+    private val pinGetNameUseCase: PinGetNameUseCase,
+    private val enterPinUseCase: EnterPinUseCase,
+    private val changePinUseCase: ChangePinUseCase
+) : ViewModel(),
+    CoreViewModel<PinIntent> {
 
     private var navController: NavController? = null
 
-    override fun initiateController(navController: NavController){
+    override fun initiateController(navController: NavController) {
         this.navController = navController
     }
 
     private val _state = MutableStateFlow(PinState())
     val state = _state.asStateFlow()
 
-    override fun onIntent(intent: PinIntent){
-        when(intent) {
+    override fun onIntent(intent: PinIntent) {
+        when (intent) {
             is PinIntent.OnPressDigit -> onHandleNumberPress(intent.digit)
-            PinIntent.OnClear -> _state.update { it.copy(pin = List(6){""}, currentIndex = 0, error = "") }
+            PinIntent.OnClear -> _state.update {
+                it.copy(
+                    pin = List(6) { "" },
+                    currentIndex = 0,
+                    error = ""
+                )
+            }
+
             PinIntent.OnRemoveDigit -> onHandleRemoveDigit()
             PinIntent.OnGetName -> onGetName()
+            is PinIntent.OnSetIsChangePinScreen -> _state.update { it.copy(isChangePinScreen = intent.isChangePin) }
+            PinIntent.OnNavigateBack -> navController?.popBackStack()
         }
     }
 
-    private fun onGetName(){
+    private fun onGetName() {
         viewModelScope.launch {
-            when(val res = pinGetNameUseCase.invoke()){
+            when (val res = pinGetNameUseCase.invoke()) {
                 is Result.Error -> _state.update { it.copy(error = res.message, currentIndex = 5) }
                 is Result.Success<*> -> _state.update { it.copy(name = res.data.toString()) }
             }
         }
     }
 
-    private fun onSubmit(){
-        viewModelScope.launch {
-            when(val res = enterPinUseCase.invoke(_state.value.pin.joinToString())){
-                is Result.Error -> _state.update { it.copy(error = res.message, currentIndex = 0, pin = List(6){""}) }
-                is Result.Success<*> -> navController?.navigate(ScreenModel.Home.route){popUpTo(
-                    ScreenModel.Pin.route){inclusive = true}}
+    private fun onSubmit() {
+
+        if (!_state.value.isChangePinScreen) {
+            viewModelScope.launch {
+                when (val res = enterPinUseCase(_state.value.pin.joinToString())) {
+                    is Result.Error -> _state.update {
+                        it.copy(
+                            error = res.message,
+                            currentIndex = 0,
+                            pin = List(6) { "" })
+                    }
+
+                    is Result.Success<*> -> navController?.navigate(ScreenModel.Home.route) {
+                        popUpTo(
+                            ScreenModel.Pin.route
+                        ) { inclusive = true }
+                    }
+                }
+            }
+        } else {
+            viewModelScope.launch {
+                when (val res = changePinUseCase(_state.value.pin.joinToString())) {
+                    is Result.Error -> _state.update {
+                        it.copy(
+                            error = res.message,
+                            currentIndex = 0,
+                            pin = List(6) { "" })
+                    }
+
+                    is Result.Success<*> -> navController?.popBackStack()
+                }
             }
         }
+
     }
 
-    private fun onHandleNumberPress(digit:String){
+    private fun onHandleNumberPress(digit: String) {
 
         if (_state.value.currentIndex < 6) {
             val newPin = _state.value.pin.toMutableList()
             newPin[_state.value.currentIndex] = digit
-            _state.update { it.copy(pin = newPin, currentIndex = _state.value.currentIndex+1) }
+            _state.update { it.copy(pin = newPin, currentIndex = _state.value.currentIndex + 1) }
 
 
         }
-        if(_state.value.currentIndex == 6){
+        if (_state.value.currentIndex == 6) {
             onSubmit()
         }
     }
 
-    private fun onHandleRemoveDigit(){
-        if(_state.value.currentIndex > 0 && _state.value.pin[_state.value.currentIndex].isEmpty() ){
+    private fun onHandleRemoveDigit() {
+        if (_state.value.currentIndex > 0 && _state.value.pin[_state.value.currentIndex].isEmpty()) {
             val newPin = _state.value.pin.toMutableList()
-            newPin[_state.value.currentIndex-1] = ""
-            _state.update { it.copy(pin = newPin,currentIndex = (_state.value.currentIndex-1)) }
-        }
-
-        else if(_state.value.currentIndex>-1){
+            newPin[_state.value.currentIndex - 1] = ""
+            _state.update { it.copy(pin = newPin, currentIndex = (_state.value.currentIndex - 1)) }
+        } else if (_state.value.currentIndex > -1) {
             val newPin = _state.value.pin.toMutableList()
             newPin[_state.value.currentIndex] = ""
-            _state.update { it.copy(pin = newPin, currentIndex = if(_state.value.currentIndex == 0) 0 else _state.value.currentIndex-1) }
+            _state.update {
+                it.copy(
+                    pin = newPin,
+                    currentIndex = if (_state.value.currentIndex == 0) 0 else _state.value.currentIndex - 1
+                )
+            }
         }
     }
 

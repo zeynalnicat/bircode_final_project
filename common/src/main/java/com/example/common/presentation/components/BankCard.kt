@@ -43,9 +43,6 @@ fun BankCard(
     modifier: Modifier = Modifier,
     availableBalance: String = "",
     isPreview: Boolean = false,
-    previewAction: () -> Unit = {},
-    isDropDownItem: Boolean = false,
-    onClick: () -> Unit = {},
     cardColor: ULong = Secondary.value,
     contentColor: Color = Color.White,
     scale: Float = 1f,
@@ -65,9 +62,6 @@ fun BankCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        previewAction()
-                    }
                     .graphicsLayer {
                         alpha = 0.9f
                         shadowElevation = 8.dp.toPx()
@@ -92,10 +86,8 @@ fun BankCard(
                 imageVector = Icons.Default.Add,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(48.dp)
-                    .clickable {
-                        previewAction()
-                    }
+                    .size(48.dp),
+                tint = Color.White
             )
         }
     } else {

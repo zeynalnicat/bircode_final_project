@@ -52,8 +52,8 @@ fun SettingsItem(
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.White)
                     .clip(RoundedCornerShape(12.dp))
+                    .background(Color.White)
                     .padding(8.dp)
             ) {
                 Icon(icon, contentDescription = "", tint = Primary, modifier = Modifier.size(24.dp))

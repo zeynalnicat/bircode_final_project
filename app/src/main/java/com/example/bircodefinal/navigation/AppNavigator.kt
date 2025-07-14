@@ -34,7 +34,7 @@ fun AppNavigator(
 
     NavHost(
         navController = navController,
-        startDestination = if (firebaseAuth.currentUser != null) ScreenModel.Pin.route else ScreenModel.SignUp.route,
+        startDestination = if (firebaseAuth.currentUser != null) ScreenModel.Pin.withIsChangePin(false) else ScreenModel.SignUp.route,
         modifier = Modifier.padding(innerPadding)
     ) {
 
@@ -42,7 +42,13 @@ fun AppNavigator(
         composable(ScreenModel.SignUp.route) { SignUpScreen(navController, hiltViewModel()) }
         composable(ScreenModel.Login.route) { LoginScreen(navController, hiltViewModel()) }
         composable(ScreenModel.Settings.route) { SettingsScreen(navController, hiltViewModel()) }
-        composable(ScreenModel.Pin.route) { PinScreen(navController, hiltViewModel()) }
+        composable(ScreenModel.Pin.route, arguments = listOf(navArgument("isChangePin") {
+            type =
+                NavType.BoolType
+        })) { backStackEntry ->
+            val isChangePin = backStackEntry.arguments?.get("isChangePin") as? Boolean ?: false
+            PinScreen(navController, hiltViewModel(), isChangePin)
+        }
         composable(ScreenModel.Profile.route) { ProfileScreen(navController, hiltViewModel()) }
         composable(ScreenModel.NewCard.route) { NewCardScreen(navController, hiltViewModel()) }
         composable(ScreenModel.PayBill.route) { PayBillScreen(navController, hiltViewModel()) }

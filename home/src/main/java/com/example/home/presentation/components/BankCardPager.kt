@@ -42,12 +42,10 @@ fun BankCardPager(
 
     ) { page ->
         val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-        val clampedOffset = pageOffset.coerceIn(-1f, 1f)
-
+        val clampedOffset = pageOffset.coerceIn(-0.15f, 0.5f)
 
         val rotation = clampedOffset * 30f
-
-        val scale = 1f - (0.15f * kotlin.math.abs(clampedOffset))
+        val scale = 1f - (0.8f * kotlin.math.abs(clampedOffset))
 
         Box(
             modifier = Modifier.graphicsLayer(

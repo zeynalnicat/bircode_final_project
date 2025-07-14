@@ -161,12 +161,19 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
             if (state.cards.isEmpty()) {
 
-                BankCard(
-                    cardHolder = "",
-                    cardNumber = "****",
-                    isPreview = true,
-                    previewAction = {viewModel.onIntent(HomeIntent.OnNavigateToAddCard)}
-                )
+                Column(
+                    modifier = Modifier.fillMaxWidth().clickable{
+                        viewModel.onIntent(HomeIntent.OnNavigateToAddCard)
+                    },
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    BankCard(
+                        cardHolder = "",
+                        cardNumber = "****",
+                        isPreview = true
+                    )
+                }
+
 
 
             } else {

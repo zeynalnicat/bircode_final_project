@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -30,6 +31,10 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             AppStrings.profile,
             Icons.Default.Person,
             { viewModel.onIntent(SettingsIntent.OnNavigateToProfile) }),
+        SettingsUiModel(
+            AppStrings.changePin,
+            Icons.Default.Lock,
+            { viewModel.onIntent(SettingsIntent.OnNavigateToPin) }),
         SettingsUiModel(AppStrings.logOut, Icons.Default.ExitToApp, {
             viewModel.onIntent(
                 SettingsIntent.OnLogOut
@@ -63,7 +68,8 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .padding(top = 32.dp)
         ) {
             settingsItems.forEach {
                 SettingsItem(it.title, it.icon) { it.onClick() }

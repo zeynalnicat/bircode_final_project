@@ -126,7 +126,6 @@ fun PayOperationScreen(
                             cardColor = selectedCard.cardColor.toULong(),
                             cardNumber = selectedCard.cardNumber,
                             availableBalance = selectedCard.availableBalance,
-                            isDropDownItem = true
                         )
 
                     }
@@ -163,7 +162,6 @@ fun PayOperationScreen(
                                     height = 150.dp,
                                     availableBalance = card.availableBalance,
                                     scale = 0.3f,
-                                    isDropDownItem = true
                                 )
 
                                 Spacer(Modifier.width(12.dp))
@@ -178,21 +176,22 @@ fun PayOperationScreen(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .fillMaxWidth()
-                        .height(100.dp)
-                        .background(
-                            Color.White
-                        )
                         .clickable {
                             viewModel.onIntent(PayOperationIntent.OnNavigateToNewCard)
                         }
-                ) {
+                        .fillMaxWidth()
+                        .background(
+                            Color.White
+                        )
 
+                        .height(100.dp),
+                    horizontalArrangement = Arrangement.Center
+
+
+                ) {
                     BankCard(
                         cardHolder = "",
                         cardNumber = "****",
-                        scale = 0.3f,
-                        isDropDownItem = true,
                         isPreview = true
                     )
 

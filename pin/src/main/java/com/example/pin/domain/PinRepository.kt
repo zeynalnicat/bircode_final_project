@@ -7,4 +7,6 @@ interface PinRepository {
     suspend fun getName(): Result<String>
 
     suspend fun enterPin(pin:String): Result<Unit>
+
+    suspend fun changePin(newPin:String): Result<Unit>
 }
