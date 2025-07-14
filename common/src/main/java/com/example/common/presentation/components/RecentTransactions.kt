@@ -57,9 +57,9 @@ fun RecentTransactions(
             else{
                 transactions.forEach {
                         Column(
-                            Modifier.padding(8.dp).clickable{
+                            Modifier.clickable{
                                 onClick(it.id)
-                            }
+                            }.padding(8.dp)
                         ) {
                             TransactionCard(
                                 it

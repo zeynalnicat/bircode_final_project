@@ -164,7 +164,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 BankCard(
                     cardHolder = "",
                     cardNumber = "****",
-                    isPreview = true
+                    isPreview = true,
+                    previewAction = {viewModel.onIntent(HomeIntent.OnNavigateToAddCard)}
                 )
 
 

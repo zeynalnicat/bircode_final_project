@@ -40,6 +40,7 @@ import com.example.core.AppStrings
 fun BankCard(
     cardHolder: String,
     cardNumber: String,
+    modifier: Modifier = Modifier,
     availableBalance: String = "",
     isPreview: Boolean = false,
     previewAction: () -> Unit = {},
@@ -56,16 +57,17 @@ fun BankCard(
         Box(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .size(width, height)
-                .clickable {
-                    previewAction()
-                },
+                .size(width, height),
+
             contentAlignment = Alignment.Center
 
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable {
+                        previewAction()
+                    }
                     .graphicsLayer {
                         alpha = 0.9f
                         shadowElevation = 8.dp.toPx()
@@ -83,7 +85,6 @@ fun BankCard(
                     width = width,
                     height = height,
                     scale = scale,
-                    isDropDownItem = isDropDownItem
                 )
             }
 
@@ -102,13 +103,12 @@ fun BankCard(
             availableBalance = availableBalance,
             cardNumber = cardNumber,
             cardHolder = cardHolder,
+            modifier = modifier,
             cardColor = cardColor,
             contentColor = contentColor,
             width = width,
             height = height,
             scale = scale,
-            onClick = onClick,
-            isDropDownItem = isDropDownItem
         )
     }
 
@@ -121,8 +121,7 @@ private fun BankCardDetails(
     cardNumber: String,
     cardHolder: String,
     cardColor: ULong,
-    onClick: () -> Unit = {},
-    isDropDownItem: Boolean,
+    modifier: Modifier = Modifier,
     contentColor: Color,
     width: Dp,
     height: Dp,
@@ -138,7 +137,7 @@ private fun BankCardDetails(
             disabledContainerColor = Color(cardColor),
             disabledContentColor = contentColor,
         ),
-        modifier = Modifier
+        modifier = modifier
             .size(width = width, height = height)
             .border(
                 1.dp, Color.Transparent,
@@ -146,9 +145,7 @@ private fun BankCardDetails(
             )
             .scale(scale)
             .size(width, height)
-            .clickable {
-                if (!isDropDownItem) onClick() else null
-            }
+
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceBetween,

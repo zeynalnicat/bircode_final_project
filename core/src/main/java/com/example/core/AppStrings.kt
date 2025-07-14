@@ -7,6 +7,8 @@ object AppStrings {
     val namePlaceHolder = "Name"
     val createAccount = "Create an Account"
 
+    val settings = "Settings"
+
     val login = "Login"
 
     val register = "Sign up"
@@ -74,5 +76,6 @@ object AppStrings {
 
     val transactionStatus = "Transactions Status: Paid"
     val cardNumber = "Receiver card number"
+    val logOut = "Log out"
 
 }

@@ -19,6 +19,8 @@ import com.example.profile.domain.GetProfileDetailsUseCase
 import com.example.profile.domain.ProfileRepository
 import com.example.register.domain.SignUpRepository
 import com.example.register.domain.SignUpUseCase
+import com.example.settings.domain.LogoutUseCase
+import com.example.settings.domain.SettingsRepository
 import com.example.signin.domain.LoginRepository
 import com.example.signin.domain.LoginUseCase
 import com.example.transactionreceipt.domain.GetTransactionDetailsUseCase
@@ -86,4 +88,8 @@ object UseCaseModule {
     @Provides
     fun provideBankToBankUseCase(payOperationRepository: PayOperationRepository): BankToBankUseCase =
         BankToBankUseCase(payOperationRepository)
+
+    @Provides
+    fun provideLogOutUseCase(settingsRepository: SettingsRepository): LogoutUseCase =
+        LogoutUseCase(settingsRepository)
 }

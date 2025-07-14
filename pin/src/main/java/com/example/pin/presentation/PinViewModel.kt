@@ -51,7 +51,7 @@ class PinViewModel @Inject constructor(private val pinGetNameUseCase: PinGetName
     private fun onSubmit(){
         viewModelScope.launch {
             when(val res = enterPinUseCase.invoke(_state.value.pin.joinToString())){
-                is Result.Error -> _state.update { it.copy(error = res.message, currentIndex = 5) }
+                is Result.Error -> _state.update { it.copy(error = res.message, currentIndex = 0, pin = List(6){""}) }
                 is Result.Success<*> -> navController?.navigate(ScreenModel.Home.route){popUpTo(
                     ScreenModel.Pin.route){inclusive = true}}
             }

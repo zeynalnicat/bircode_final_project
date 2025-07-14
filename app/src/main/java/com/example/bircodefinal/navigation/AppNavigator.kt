@@ -41,7 +41,7 @@ fun AppNavigator(
         composable(ScreenModel.Home.route) { HomeScreen(navController, hiltViewModel()) }
         composable(ScreenModel.SignUp.route) { SignUpScreen(navController, hiltViewModel()) }
         composable(ScreenModel.Login.route) { LoginScreen(navController, hiltViewModel()) }
-        composable(ScreenModel.Settings.route) { SettingsScreen() }
+        composable(ScreenModel.Settings.route) { SettingsScreen(navController, hiltViewModel()) }
         composable(ScreenModel.Pin.route) { PinScreen(navController, hiltViewModel()) }
         composable(ScreenModel.Profile.route) { ProfileScreen(navController, hiltViewModel()) }
         composable(ScreenModel.NewCard.route) { NewCardScreen(navController, hiltViewModel()) }
@@ -54,14 +54,20 @@ fun AppNavigator(
                     type =
                         NavType.BoolType
                 },
-                navArgument("isBankToBank"){
+                navArgument("isBankToBank") {
                     type = NavType.BoolType
                 })
         ) { backStackEntry ->
             val transactionType = backStackEntry.arguments?.get("transactionType") as? String ?: ""
             val isTopUp = backStackEntry.arguments?.get("isTopUp") as? Boolean ?: false
-            val isBankToBank = backStackEntry.arguments?.get("isBankToBank") as? Boolean?: false
-            PayOperationScreen(navController, hiltViewModel(), transactionType, isTopUp,isBankToBank)
+            val isBankToBank = backStackEntry.arguments?.get("isBankToBank") as? Boolean ?: false
+            PayOperationScreen(
+                navController,
+                hiltViewModel(),
+                transactionType,
+                isTopUp,
+                isBankToBank
+            )
         }
 
         composable(ScreenModel.CardDetails.route, arguments = listOf(navArgument("id") {

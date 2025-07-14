@@ -18,4 +18,6 @@ object AppErrors {
     val emptyField = "Empty field. Please fill it"
 
     val cantTransfer = "You can not transfer this amount"
+
+    val errorWhileLogout = "Error occurred while logging out"
 }

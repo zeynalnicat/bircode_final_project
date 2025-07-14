@@ -112,13 +112,14 @@ fun PayOperationScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .clip(RoundedCornerShape(12.dp))
+                            .clickable {
+                                expanded.value = !expanded.value
+                            }
                             .fillMaxWidth()
                             .background(
                                 TextFieldGray.copy(0.1f)
                             )
-                            .clickable {
-                                expanded.value = !expanded.value
-                            }
+
                     ) {
                         BankCard(
                             cardHolder = selectedCard.cardHolder,

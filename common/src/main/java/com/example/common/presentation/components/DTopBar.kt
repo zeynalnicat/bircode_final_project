@@ -22,7 +22,8 @@ import com.example.core.AppStrings
 @Composable
 fun DTopBar(
     title:String,
-    onLeftAction:()->Unit
+    isTitle: Boolean = false,
+    onLeftAction:()->Unit={},
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -31,16 +32,19 @@ fun DTopBar(
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
 
-        Icon(
-            Icons.Default.ArrowBack,
-            contentDescription = "",
-            modifier = Modifier
-                .size(32.dp)
-                .clickable {
-                    onLeftAction()
-                },
-            tint = Secondary,
-        )
+        if(!isTitle){
+            Icon(
+                Icons.Default.ArrowBack,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable {
+                        onLeftAction()
+                    },
+                tint = Secondary,
+            )
+        }
+
 
         Row(
             horizontalArrangement = Arrangement.Center,

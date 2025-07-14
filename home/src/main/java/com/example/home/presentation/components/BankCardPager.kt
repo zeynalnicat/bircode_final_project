@@ -1,6 +1,9 @@
 package com.example.home.presentation.components
 
+import android.gesture.Gesture
+import android.view.GestureDetector
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,7 +45,7 @@ fun BankCardPager(
             cardHolder = cards[page].cardHolder,
             availableBalance = cards[page].availableBalance,
             cardColor = cards[page].cardColor.toULong(),
-            onClick = {onClick(cards[page].cardId)}
+            modifier = Modifier.clickable { onClick(cards[page].cardId) }
         )
     }
 

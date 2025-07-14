@@ -14,6 +14,8 @@ import com.example.profile.data.ProfileRepositoryImpl
 import com.example.profile.domain.ProfileRepository
 import com.example.register.data.SignUpRepositoryImpl
 import com.example.register.domain.SignUpRepository
+import com.example.settings.data.SettingsRepositoryImpl
+import com.example.settings.domain.SettingsRepository
 import com.example.signin.data.LoginRepositoryImpl
 import com.example.signin.domain.LoginRepository
 import com.example.transactionreceipt.data.TransactionDetailRepositoryImpl
@@ -88,6 +90,10 @@ object RepositoryModule {
     fun provideTransactionDetailRepo(
         firebaseFirestore: FirebaseFirestore
     ): TransactionDetailRepository = TransactionDetailRepositoryImpl(firebaseFirestore)
+
+    @Provides
+    fun provideSettingsRepo(firebaseAuth: FirebaseAuth): SettingsRepository =
+        SettingsRepositoryImpl(firebaseAuth)
 }
 
 

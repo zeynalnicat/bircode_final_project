@@ -52,7 +52,7 @@ class PayOperationViewModel @Inject constructor(
             PayOperationIntent.OnGetCards -> getCards()
             PayOperationIntent.OnNavigateToNewCard -> navController?.navigate(ScreenModel.NewCard.route) {
                 popUpTo(
-                    ScreenModel.PayOperation
+                    ScreenModel.PayOperation.route
                 ) { inclusive = true }
             }
 
@@ -232,11 +232,17 @@ class PayOperationViewModel @Inject constructor(
         viewModelScope.launch {
             when (val res = payOperationGetCardsUseCase()) {
                 is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                is Result.Success<List<CardModel>> -> _state.update {
-                    it.copy(
-                        cards = res.data,
-                        selectedCardId = res.data[0].cardId
-                    )
+                is Result.Success<List<CardModel>> -> {
+                    if(res.data.isNotEmpty()){
+                        _state.update {
+                            it.copy(
+                                cards = res.data,
+                                selectedCardId = res.data[0].cardId
+                            )
+                        }
+                    }else{
+                        _state.update { it.copy(cards = emptyList()) }
+                    }
                 }
             }
         }
