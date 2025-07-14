@@ -8,6 +8,7 @@ import com.example.core.AppErrors
 import com.example.core.CoreViewModel
 import com.example.core.Result
 import com.example.core.ScreenModel
+import com.example.payoperation.domain.BankToBankUseCase
 import com.example.payoperation.domain.PayOperationGetCardsUseCase
 import com.example.payoperation.domain.PayOperationOnTopUpUseCase
 import com.example.payoperation.domain.PayOperationSaveTransactionUseCase
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class PayOperationViewModel @Inject constructor(
     private val payOperationGetCardsUseCase: PayOperationGetCardsUseCase,
     private val payOperationSaveTransactionUseCase: PayOperationSaveTransactionUseCase,
-    private val payOperationOnTopUpUseCase: PayOperationOnTopUpUseCase
+    private val payOperationOnTopUpUseCase: PayOperationOnTopUpUseCase,
+    private val payOperationBankUseCase: BankToBankUseCase,
 ) : ViewModel(), CoreViewModel<PayOperationIntent> {
 
     private var navController: NavController? = null
@@ -63,10 +65,109 @@ class PayOperationViewModel @Inject constructor(
                     receiverCardNumber = intent.number
                 )
             }
+
+            PayOperationIntent.OnNavigateToTransactionDetail -> navController?.navigate(
+                ScreenModel.TransactionDetails.withId(
+                    _state.value.transactionId
+                )
+            ) { popUpTo(ScreenModel.PayOperation.route) { inclusive = true } }
         }
     }
 
     private fun onHandleTransfer() {
+        _state.update {
+            it.copy(
+                error = "",
+                receiverCardNumberError = "",
+                isLoading = true,
+                enableSubmit = false
+            )
+        }
+
+        if (!_state.value.enableSubmit) {
+            val selectedCard = _state.value.cards.find { it.cardId == _state.value.selectedCardId }
+
+            if (_state.value.amount.toLong() <= 0) {
+                _state.update {
+                    it.copy(
+                        error = AppErrors.cantTransfer,
+                        isLoading = false,
+                        enableSubmit = true
+                    )
+                }
+            }
+
+            if (_state.value.amount.isEmpty()) {
+                _state.update {
+                    it.copy(
+                        error = AppErrors.emptyField,
+                        isLoading = false,
+                        enableSubmit = true
+                    )
+                }
+            }
+
+            if (_state.value.receiverCardNumber.isEmpty()) {
+                _state.update {
+                    it.copy(
+                        receiverCardNumberError = AppErrors.emptyField,
+                        isLoading = false, enableSubmit = true
+                    )
+                }
+            }
+
+            if (selectedCard != null && selectedCard.availableBalance.toInt() < _state.value.amount.toInt()) {
+                _state.update {
+                    it.copy(
+                        error = AppErrors.notEnoughAmount,
+                        isLoading = false,
+                        enableSubmit = true
+                    )
+                }
+            }
+
+            if (selectedCard?.cardNumber == _state.value.receiverCardNumber) {
+                _state.update {
+                    it.copy(
+                        receiverCardNumberError = AppErrors.cardNumberNotSame,
+                        isLoading = false, enableSubmit = true
+                    )
+                }
+            }
+            if (_state.value.receiverCardNumber.length < 16) {
+                _state.update {
+                    it.copy(
+                        receiverCardNumberError = AppErrors.notValidCardNumber,
+                        isLoading = false, enableSubmit = true
+                    )
+                }
+            }
+
+            if (_state.value.error.isEmpty() && _state.value.receiverCardNumberError.isEmpty()) {
+                _state.update {
+                    it.copy(
+                        error = "",
+                        receiverCardNumberError = "",
+                        isLoading = false, enableSubmit = true
+                    )
+                }
+                viewModelScope.launch {
+                    when (val res = payOperationBankUseCase(
+                        _state.value.selectedCardId,
+                        _state.value.amount,
+                        _state.value.transactionType,
+                        _state.value.receiverCardNumber
+                    )) {
+                        is Result.Error -> _state.update { it.copy(error = res.message) }
+                        is Result.Success<String> -> {
+                            _state.update { it.copy(transactionId = res.data, enableSubmit = true) }
+                            _effect.emit(PayOperationUiEffect.OnNavigateToTransactionDetail)
+                        }
+                    }
+
+                }
+            }
+        }
 
     }
 
@@ -82,14 +183,15 @@ class PayOperationViewModel @Inject constructor(
                     _state.value.transactionType
                 )) {
                     is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                    is Result.Success<*> -> {
-                        navController?.navigate(ScreenModel.Home.route) {
-                            popUpTo(ScreenModel.PayOperation.route) {
-
-                            }
-                            popUpTo(ScreenModel.PayBill.route) { inclusive = true }
+                    is Result.Success<String> -> {
+                        _state.update {
+                            it.copy(
+                                error = "",
+                                isLoading = false,
+                                transactionId = res.data
+                            )
                         }
-                        _state.update { it.copy(error = "", isLoading = false) }
+                        _effect.emit(PayOperationUiEffect.OnNavigateToTransactionDetail)
                     }
                 }
             }
@@ -107,14 +209,15 @@ class PayOperationViewModel @Inject constructor(
                         _state.value.transactionType
                     )) {
                         is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                        is Result.Success<*> -> {
-                            navController?.navigate(ScreenModel.Home.route) {
-                                popUpTo(ScreenModel.PayOperation.route) {
-
-                                }
-                                popUpTo(ScreenModel.PayBill.route) { inclusive = true }
+                        is Result.Success<String> -> {
+                            _state.update {
+                                it.copy(
+                                    error = "",
+                                    isLoading = false,
+                                    transactionId = res.data
+                                )
                             }
-                            _state.update { it.copy(error = "", isLoading = false) }
+                            _effect.emit(PayOperationUiEffect.OnNavigateToTransactionDetail)
                         }
                     }
                 }

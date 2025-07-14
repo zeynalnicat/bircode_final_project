@@ -66,18 +66,21 @@ fun PayOperationScreen(
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect {
-            when(it){
+            when (it) {
 
-                is PayOperationUiEffect.OnShowError ->snackbarHostState.showSnackbar(it.message)
+                is PayOperationUiEffect.OnShowError -> snackbarHostState.showSnackbar(it.message)
+                PayOperationUiEffect.OnNavigateToTransactionDetail -> viewModel.onIntent(
+                    PayOperationIntent.OnNavigateToTransactionDetail
+                )
             }
         }
     }
 
     Scaffold(
-        snackbarHost = {SnackbarHost(snackbarHostState)},
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             DTopBar(
-                if(!isBankToBank) AppStrings.payment else AppStrings.bankToBank
+                if (!isBankToBank) AppStrings.payment else AppStrings.bankToBank
             ) {
                 viewModel.onIntent(PayOperationIntent.OnNavigateBack)
             }
@@ -196,46 +199,49 @@ fun PayOperationScreen(
 
             }
 
-          if(isBankToBank){
-              Text(AppStrings.cardNumber, style = DTextStyle.t14Primary)
+            if (isBankToBank) {
+                Text(AppStrings.cardNumber, style = DTextStyle.t14Primary)
 
 
-              CoreTextField(
-                  value = state.receiverCardNumber,
-                  supportingText = state.error,
-                  onChange = {viewModel.onIntent(PayOperationIntent.OnSetReceiverCardNumber(it))},
-                  placeHolder = AppStrings.amount,
-                  keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-              )
-          }
+                CoreTextField(
+                    isError = state.receiverCardNumberError.isNotEmpty(),
+                    supportingText = state.receiverCardNumberError,
+                    value = state.receiverCardNumber,
+                    onChange = { viewModel.onIntent(PayOperationIntent.OnSetReceiverCardNumber(it)) },
+                    placeHolder = AppStrings.cardNumber,
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                )
 
-          Text(AppStrings.amount, style = DTextStyle.t14Primary)
+            }
+
+            Text(AppStrings.amount, style = DTextStyle.t14Primary)
 
 
             CoreTextField(
+                isError = state.error.isNotEmpty(),
+                supportingText = state.error,
                 value = state.amount,
-                onChange = {viewModel.onIntent(PayOperationIntent.OnSetAmount(it))},
+                onChange = { viewModel.onIntent(PayOperationIntent.OnSetAmount(it)) },
                 placeHolder = AppStrings.amount,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             )
 
-            if(state.error.isNotEmpty()){
-                Text(state.error, style = DTextStyle.error)
 
-            }
             Spacer(Modifier.height(16.dp))
 
-            if(!isBankToBank){
+            if (!isBankToBank) {
                 DButton(
+                    enabled = state.enableSubmit,
                     title = AppStrings.pay,
                     loading = state.isLoading,
-                    onClick = {viewModel.onIntent(PayOperationIntent.OnHandleSubmit)}
+                    onClick = { viewModel.onIntent(PayOperationIntent.OnHandleSubmit) }
                 )
-            }else{
+            } else {
                 DButton(
+                    enabled = state.enableSubmit,
                     title = AppStrings.moneyTransfer,
                     loading = state.isLoading,
-                    onClick = {viewModel.onIntent(PayOperationIntent.OnHandleTransfer)}
+                    onClick = { viewModel.onIntent(PayOperationIntent.OnHandleTransfer) }
                 )
             }
 

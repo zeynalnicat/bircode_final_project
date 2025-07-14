@@ -9,7 +9,7 @@ class PayOperationSaveTransactionUseCase @Inject constructor(private val reposit
         cardId: String,
         amount: String,
         transactionName: String
-    ): Result<Unit> {
+    ): Result<String> {
         return repository.saveTransaction(cardId,amount,transactionName)
     }
 

@@ -9,7 +9,11 @@ data class PayOperationState(
     val selectedCardId: String = "",
     val isLoading: Boolean = false,
     val error :String = "",
+    val receiverCardNumberError:String = "",
     val isTopUp: Boolean = false,
     val receiverCardNumber:String = "",
+    val transactionId:String = "",
+    val enableSubmit : Boolean = true,
+
 
 )

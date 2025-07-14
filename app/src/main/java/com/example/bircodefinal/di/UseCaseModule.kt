@@ -7,6 +7,7 @@ import com.example.home.domain.HomeGetCardTransactionsUseCase
 import com.example.home.domain.HomeRepository
 import com.example.newcard.domain.CreateNewCardUseCase
 import com.example.newcard.domain.NewCardRepository
+import com.example.payoperation.domain.BankToBankUseCase
 import com.example.payoperation.domain.PayOperationGetCardsUseCase
 import com.example.payoperation.domain.PayOperationOnTopUpUseCase
 import com.example.payoperation.domain.PayOperationRepository
@@ -81,4 +82,8 @@ object UseCaseModule {
     @Provides
     fun provideGetTransactionDetailsUseCase(transactionDetailRepository: TransactionDetailRepository): GetTransactionDetailsUseCase =
         GetTransactionDetailsUseCase(transactionDetailRepository)
+
+    @Provides
+    fun provideBankToBankUseCase(payOperationRepository: PayOperationRepository): BankToBankUseCase =
+        BankToBankUseCase(payOperationRepository)
 }

@@ -86,7 +86,7 @@ fun TransactionCard(
             }
 
             Text(
-                "${if (transactionModel.isExpense) '-' else '+'} ${transactionModel.amount}",
+                "${if (transactionModel.isExpense) '-' else '+'} \$${transactionModel.amount}",
                 style = DTextStyle.t12.copy(color = if(transactionModel.isExpense) Color.Red else Green)
             )
 

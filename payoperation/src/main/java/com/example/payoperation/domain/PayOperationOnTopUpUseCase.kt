@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class PayOperationOnTopUpUseCase @Inject constructor(private val repository: PayOperationRepository) {
 
-    suspend operator fun invoke(cardId:String,amount:String,transactionName:String): Result<Unit>{
+    suspend operator fun invoke(cardId:String,amount:String,transactionName:String): Result<String>{
         return repository.topUpBalance(cardId,amount,transactionName)
     }
 }

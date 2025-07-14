@@ -1,5 +1,7 @@
 package com.example.home.data
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.core.Result
 import com.example.common.domain.CardModel
 import com.example.common.domain.TransactionModel
@@ -7,6 +9,8 @@ import com.example.core.AppErrors
 import com.example.home.domain.HomeRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -49,6 +53,7 @@ class HomeRepositoryImpl @Inject constructor(
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getCardTransactions(cardId: String): Result<List<TransactionModel>> =
         suspendCoroutine { continuation ->
             try {
@@ -69,7 +74,10 @@ class HomeRepositoryImpl @Inject constructor(
 
                                 }
 
-                                continuation.resume(Result.Success(transactionModel))
+                                val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                val sortedTransactions = transactionModel.sortedByDescending { LocalDate.parse(it.date, dateFormatter) }
+
+                                continuation.resume(Result.Success(sortedTransactions))
                             } else {
                                 continuation.resume(Result.Success(emptyList()))
                             }

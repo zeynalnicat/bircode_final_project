@@ -15,15 +15,19 @@ import com.example.common.presentation.theme.Secondary
 
 
 @Composable
-fun DButton(title:String,onClick:()->Unit,
-            elevation: ButtonElevation? = ButtonDefaults.buttonElevation(
-                defaultElevation = 2.dp,
-                pressedElevation = 8.dp,
-                disabledElevation = 0.dp
-            ),
-            loading: Boolean = false,) {
+fun DButton(
+    title: String, onClick: () -> Unit,
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(
+        defaultElevation = 2.dp,
+        pressedElevation = 8.dp,
+        disabledElevation = 0.dp
+    ),
+    loading: Boolean = false,
+    enabled: Boolean = true,
+) {
 
     Button(
+        enabled =enabled,
         modifier = Modifier.fillMaxWidth(),
         elevation = elevation,
         shape = RoundedCornerShape(12.dp),
@@ -32,7 +36,7 @@ fun DButton(title:String,onClick:()->Unit,
             containerColor = Secondary
         ),
     ) {
-        if(!loading) Text(title) else CircularProgressIndicator(color = Color.White)
+        if (!loading) Text(title) else CircularProgressIndicator(color = Color.White)
 
     }
 }

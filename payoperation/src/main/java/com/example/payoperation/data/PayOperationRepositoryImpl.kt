@@ -8,9 +8,12 @@ import com.example.core.Result
 import com.example.payoperation.domain.PayOperationRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -60,13 +63,14 @@ class PayOperationRepositoryImpl @Inject constructor(
         cardId: String,
         amount: String,
         transactionName: String
-    ): Result<Unit> = suspendCoroutine { continuation ->
+    ): Result<String> = suspendCoroutine { continuation ->
 
         try {
+            val transactionId = UUID.randomUUID().toString()
             firebaseAuth.currentUser?.let { auth ->
                 transactionCollection.add(
                     hashMapOf(
-                        "transactionId" to UUID.randomUUID().toString(),
+                        "transactionId" to transactionId,
                         "cardId" to cardId,
                         "userId" to auth.uid,
                         "amount" to amount,
@@ -84,7 +88,7 @@ class PayOperationRepositoryImpl @Inject constructor(
                             firebaseFirestore.document(reference).update(
                                 "deposit", newAmount.toString()
                             ).addOnSuccessListener {
-                                continuation.resume(Result.Success(Unit))
+                                continuation.resume(Result.Success(transactionId))
                             }.addOnFailureListener { ex0 ->
                                 continuation.resume(
                                     Result.Error(
@@ -111,12 +115,13 @@ class PayOperationRepositoryImpl @Inject constructor(
         cardId: String,
         amount: String,
         transactionName: String
-    ): Result<Unit> = suspendCoroutine{ continuation ->
+    ): Result<String> = suspendCoroutine { continuation ->
         try {
+            val transactionId = UUID.randomUUID().toString()
             firebaseAuth.currentUser?.let { auth ->
                 transactionCollection.add(
                     hashMapOf(
-                        "transactionId" to UUID.randomUUID().toString(),
+                        "transactionId" to transactionId,
                         "cardId" to cardId,
                         "userId" to auth.uid,
                         "amount" to amount,
@@ -134,7 +139,7 @@ class PayOperationRepositoryImpl @Inject constructor(
                             firebaseFirestore.document(reference).update(
                                 "deposit", newAmount.toString()
                             ).addOnSuccessListener {
-                                continuation.resume(Result.Success(Unit))
+                                continuation.resume(Result.Success(transactionId))
                             }.addOnFailureListener { ex0 ->
                                 continuation.resume(
                                     Result.Error(
@@ -154,4 +159,99 @@ class PayOperationRepositoryImpl @Inject constructor(
             continuation.resume(Result.Error(e.message ?: AppErrors.unknownError))
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun transferTo(
+        cardId: String,
+        amount: String,
+        transactionName: String,
+        receiverCardNumber: String
+    ): Result<String> = suspendCoroutine { continuation ->
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser == null) {
+            continuation.resume(Result.Error("User not authenticated"))
+            return@suspendCoroutine
+        }
+
+        val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val receiverCardSnapshot = collection
+                    .whereEqualTo("cardNumber", receiverCardNumber)
+                    .get()
+                    .await()
+
+                if (receiverCardSnapshot.isEmpty) {
+                    continuation.resume(Result.Error(AppErrors.noCardFound))
+                    return@launch
+                }
+
+                val receiverDoc = receiverCardSnapshot.documents[0]
+                val receiverCardId = receiverDoc.getString("cardId") ?: ""
+                val receiverUserId = receiverDoc.getString("userId") ?: ""
+
+                val transactionId = UUID.randomUUID().toString()
+                transactionCollection.add(
+                    mapOf(
+                        "userId" to currentUser.uid,
+                        "cardId" to cardId,
+                        "amount" to amount,
+                        "date" to date,
+                        "isExpense" to true,
+                        "transactionName" to transactionName,
+                        "transactionId" to transactionId
+                    )
+                ).await()
+
+                val senderSnapshot = collection.whereEqualTo("cardId", cardId).get().await()
+                if (senderSnapshot.isEmpty) {
+                    continuation.resume(Result.Error("Sender card not found"))
+                    return@launch
+                }
+
+                val senderDoc = senderSnapshot.documents[0]
+                val senderRef = senderDoc.reference
+                val senderDeposit = (senderDoc.getString("deposit") ?: "0").toLong()
+                val senderNewDeposit = senderDeposit - amount.toLong()
+
+                if (senderNewDeposit < 0) {
+                    continuation.resume(Result.Error("Insufficient funds"))
+                    return@launch
+                }
+
+                senderRef.update("deposit", senderNewDeposit.toString()).await()
+
+                transactionCollection.add(
+                    mapOf(
+                        "userId" to receiverUserId,
+                        "cardId" to receiverCardId,
+                        "amount" to amount,
+                        "date" to date,
+                        "isExpense" to false,
+                        "transactionName" to transactionName,
+                        "transactionId" to UUID.randomUUID().toString()
+                    )
+                ).await()
+
+                val receiverSnapshot =
+                    collection.whereEqualTo("cardId", receiverCardId).get().await()
+                if (receiverSnapshot.isEmpty) {
+                    continuation.resume(Result.Error("Receiver card not found after transaction"))
+                    return@launch
+                }
+
+                val receiverDoc2 = receiverSnapshot.documents[0]
+                val receiverRef = receiverDoc2.reference
+                val receiverDeposit = (receiverDoc2.getString("deposit") ?: "0").toLong()
+                val receiverNewDeposit = receiverDeposit + amount.toLong()
+                receiverRef.update("deposit", receiverNewDeposit.toString()).await()
+
+                continuation.resume(Result.Success(transactionId))
+            } catch (e: Exception) {
+                continuation.resume(Result.Error(e.message ?: AppErrors.errorWhileTransaction))
+            }
+        }
+    }
+
 }

@@ -4,6 +4,8 @@ sealed class PayOperationIntent {
 
     data object OnNavigateBack: PayOperationIntent()
 
+    data object OnNavigateToTransactionDetail: PayOperationIntent()
+
     data class OnSetTransactionType(val transactionType:String): PayOperationIntent()
     data class OnSetCard(val card: String): PayOperationIntent()
 
