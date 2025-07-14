@@ -53,7 +53,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 loading = true,
                 emailError = "",
                 passwordError = "",
-                nameError = ""
+                nameError = "",
+                enabled = false
             )
         }
 
@@ -65,28 +66,29 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
 
         if (name.isEmpty()) {
-            _state.update { it.copy(nameError = AppStrings.emptyField, loading = false) }
+            _state.update { it.copy(nameError = AppStrings.emptyField, loading = false, enabled = true) }
         }
 
         if (email.isEmpty()) {
-            _state.update { it.copy(emailError = AppStrings.emptyField, loading = false) }
+            _state.update { it.copy(emailError = AppStrings.emptyField, loading = false, enabled = true) }
         }
 
         if (password.length < 6) {
             _state.update {
                 it.copy(
                     passwordError = AppStrings.passwordLenghtError,
-                    loading = false
+                    loading = false,
+                    enabled = true
                 )
             }
         }
 
         if (password.isEmpty()) {
-            _state.update { it.copy(passwordError = AppStrings.emptyField, loading = false) }
+            _state.update { it.copy(passwordError = AppStrings.emptyField, loading = false, enabled = true) }
         }
 
         if (!email.contains("@")) {
-            _state.update { it.copy(emailError = AppStrings.notValidEmail, loading = false) }
+            _state.update { it.copy(emailError = AppStrings.notValidEmail, loading = false, enabled = true) }
         }
 
         val emailError = _state.value.emailError
@@ -99,7 +101,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 when (val res = signUpUseCase.invoke(email, name, password)) {
                     is Result.Error -> {
                         _effect.emit(SignUpUiEffect.OnShowError(res.message))
-                        _state.update { it.copy(loading = false) }
+                        _state.update { it.copy(loading = false, enabled = true) }
                     }
 
                     is Result.Success<*> -> navController?.navigate(ScreenModel.Home.route) {

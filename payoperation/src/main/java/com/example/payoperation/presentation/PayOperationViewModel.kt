@@ -144,13 +144,7 @@ class PayOperationViewModel @Inject constructor(
             }
 
             if (_state.value.error.isEmpty() && _state.value.receiverCardNumberError.isEmpty()) {
-                _state.update {
-                    it.copy(
-                        error = "",
-                        receiverCardNumberError = "",
-                        isLoading = false, enableSubmit = true
-                    )
-                }
+
                 viewModelScope.launch {
                     when (val res = payOperationBankUseCase(
                         _state.value.selectedCardId,
@@ -172,29 +166,36 @@ class PayOperationViewModel @Inject constructor(
     }
 
     private fun onHandleSubmit() {
-        _state.update { it.copy(error = "", isLoading = true) }
+        _state.update { it.copy(error = "", isLoading = true, enableSubmit = false) }
         val selectedCard = _state.value.cards.find { it.cardId == _state.value.selectedCardId }
 
+        if(_state.value.amount.toLong()<0){
+            _state.update { it.copy(error = AppErrors.cantTransfer, isLoading = false, enableSubmit = true) }
+            return
+        }
+
         if (_state.value.isTopUp) {
-            viewModelScope.launch {
-                when (val res = payOperationOnTopUpUseCase.invoke(
-                    _state.value.selectedCardId,
-                    _state.value.amount,
-                    _state.value.transactionType
-                )) {
-                    is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
-                    is Result.Success<String> -> {
-                        _state.update {
-                            it.copy(
-                                error = "",
-                                isLoading = false,
-                                transactionId = res.data
-                            )
+                viewModelScope.launch {
+                    when (val res = payOperationOnTopUpUseCase.invoke(
+                        _state.value.selectedCardId,
+                        _state.value.amount,
+                        _state.value.transactionType
+                    )) {
+                        is Result.Error -> _effect.emit(PayOperationUiEffect.OnShowError(res.message))
+                        is Result.Success<String> -> {
+                            _state.update {
+                                it.copy(
+                                    error = "",
+                                    isLoading = false,
+                                    enableSubmit = true,
+                                    transactionId = res.data
+                                )
+                            }
+                            _effect.emit(PayOperationUiEffect.OnNavigateToTransactionDetail)
                         }
-                        _effect.emit(PayOperationUiEffect.OnNavigateToTransactionDetail)
                     }
                 }
-            }
+
 
 
         } else {
@@ -214,6 +215,7 @@ class PayOperationViewModel @Inject constructor(
                                 it.copy(
                                     error = "",
                                     isLoading = false,
+                                    enableSubmit = true,
                                     transactionId = res.data
                                 )
                             }

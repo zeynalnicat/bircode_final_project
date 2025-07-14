@@ -146,6 +146,7 @@ fun NewCardScreen(navController: NavController, viewModel: NewCardViewModel) {
             Spacer(modifier = Modifier.height(32.dp))
 
             DButton(
+                enabled = state.enabled,
                 loading = state.loading,
                 title = AppStrings.buy,
                 onClick = { viewModel.onIntent(NewCardIntent.OnHandleSubmit) }

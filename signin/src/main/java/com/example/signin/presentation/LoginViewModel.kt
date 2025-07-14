@@ -46,23 +46,23 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     private fun onSubmit() {
 
-        _state.update { it.copy(loading = true, emailError = "", passwordError = "") }
+        _state.update { it.copy(loading = true, emailError = "", passwordError = "", enabled = false) }
         val email = _state.value.email
         val password = _state.value.password
 
         if (email.isEmpty()) {
-            _state.update { it.copy(emailError = AppStrings.emptyField, loading = false) }
+            _state.update { it.copy(emailError = AppStrings.emptyField, loading = false, enabled = true) }
         }
 
         if (password.isEmpty()) {
-            _state.update { it.copy(passwordError = AppStrings.emptyField, loading = false) }
+            _state.update { it.copy(passwordError = AppStrings.emptyField, loading = false, enabled = true) }
         }
 
         if (_state.value.emailError.isEmpty() && _state.value.passwordError.isEmpty()) {
             viewModelScope.launch {
                 when (val res = loginUseCase.invoke(email, password)) {
                     is Result.Error -> {
-                        _state.update { it.copy(loading = false) }
+                        _state.update { it.copy(loading = false, enabled = true) }
                         _effect.emit(LoginUiEffect.OnShowError(res.message))
                     }
 

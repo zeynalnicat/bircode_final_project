@@ -101,6 +101,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel){
                 Spacer(Modifier.height(16.dp))
 
                 DButton(
+                    enabled = state.enabled,
                     title = AppStrings.register,
                     onClick = {viewModel.onIntent(SignUpIntent.OnSubmit)},
                     loading = state.loading

@@ -91,6 +91,7 @@ fun LoginScreen(navController: NavController,viewModel: LoginViewModel){
                 Spacer(Modifier.height(16.dp))
 
                 DButton(
+                    enabled = state.enabled,
                     title = AppStrings.signIn,
                     onClick = {viewModel.onIntent(LoginIntent.OnSubmit)},
                     loading = state.loading

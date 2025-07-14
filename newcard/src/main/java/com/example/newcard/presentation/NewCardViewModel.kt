@@ -43,13 +43,13 @@ class NewCardViewModel @Inject constructor(private val createNewCardUseCase: Cre
     }
 
     private fun createNewCard(){
-        _state.update { it.copy(loading = true) }
+        _state.update { it.copy(loading = true, enabled = false) }
         val cardNumber = (1000000000000000..9999999999999999).random()
         viewModelScope.launch {
             when(val res = createNewCardUseCase.invoke(_state.value.name,_state.value.color,_state.value.initialBalance,cardNumber.toString())) {
                 is Result.Error -> {
                     _effect.emit(NewCardUiEffect.OnShowError(res.message))
-                    _state.update { it.copy(loading = false) }
+                    _state.update { it.copy(loading = false, enabled = true) }
                  }
                 is Result.Success<*> -> navController?.popBackStack()
             }

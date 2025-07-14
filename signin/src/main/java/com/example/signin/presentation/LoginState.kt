@@ -6,5 +6,6 @@ data class LoginState(
     val loading: Boolean = false,
     val emailError: String = "",
     val passwordError:String = "",
+    val enabled: Boolean = true,
 
 )
